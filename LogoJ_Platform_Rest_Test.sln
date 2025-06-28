@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.36123.18
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogoJ_Platform_Rest_Test", "LogoJ_Platform_Rest_Test\LogoJ_Platform_Rest_Test.csproj", "{755EE9CF-7BB0-4CBA-8963-697523A3D72B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{755EE9CF-7BB0-4CBA-8963-697523A3D72B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{755EE9CF-7BB0-4CBA-8963-697523A3D72B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{755EE9CF-7BB0-4CBA-8963-697523A3D72B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{755EE9CF-7BB0-4CBA-8963-697523A3D72B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {99241CEF-3994-4914-B3A7-373215B4D5A7}
+	EndGlobalSection
+EndGlobal
