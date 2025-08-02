@@ -212,11 +212,6 @@ Logo_J-Platform_Rest_Service/
 
 ---
 
-## 📸 Ekran Görüntüleri
-
-> *Ekran görüntüleri yakında eklenecektir.*
-
----
 
 ## 🤝 Katkıda Bulunma
 
