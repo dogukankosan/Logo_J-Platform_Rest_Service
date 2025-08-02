@@ -1,7 +1,8 @@
 
 # 🔗 Logo J-Platform REST Service
 
-![ss](https://github.com/user-attachments/assets/3026dcc9-e4eb-4ad1-ad7e-a1573f412dbc)
+<img width="1414" height="636" alt="1" src="https://github.com/user-attachments/assets/b482f3a2-da20-415a-8a5b-bd11d81bf279" />
+
 
 ![License](https://img.shields.io/github/license/dogukankosan/Logo_J-Platform_Rest_Service)
 ![Stars](https://img.shields.io/github/stars/dogukankosan/Logo_J-Platform_Rest_Service)
