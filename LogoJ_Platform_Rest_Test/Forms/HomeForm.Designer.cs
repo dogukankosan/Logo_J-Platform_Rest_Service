@@ -39,6 +39,7 @@
             this.btn_SQLiteCommand = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.accordionControlElement2 = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.btn_ArpForm = new DevExpress.XtraBars.Navigation.AccordionControlElement();
+            this.btn_SlipForm = new DevExpress.XtraBars.Navigation.AccordionControlElement();
             this.popupMenu2 = new DevExpress.XtraBars.PopupMenu(this.components);
             this.skinBarSubItem2 = new DevExpress.XtraBars.SkinBarSubItem();
             this.fluentFormDefaultManager1 = new DevExpress.XtraBars.FluentDesignSystem.FluentFormDefaultManager(this.components);
@@ -115,7 +116,8 @@
             // accordionControlElement2
             // 
             this.accordionControlElement2.Elements.AddRange(new DevExpress.XtraBars.Navigation.AccordionControlElement[] {
-            this.btn_ArpForm});
+            this.btn_ArpForm,
+            this.btn_SlipForm});
             this.accordionControlElement2.Expanded = true;
             this.accordionControlElement2.Name = "accordionControlElement2";
             this.accordionControlElement2.Text = "Formlar";
@@ -126,6 +128,13 @@
             this.btn_ArpForm.Name = "btn_ArpForm";
             this.btn_ArpForm.Text = "Cari Form";
             this.btn_ArpForm.Click += new System.EventHandler(this.btn_ArpForm_Click);
+            // 
+            // btn_SlipForm
+            // 
+            this.btn_SlipForm.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btn_SlipForm.ImageOptions.Image")));
+            this.btn_SlipForm.Name = "btn_SlipForm";
+            this.btn_SlipForm.Text = "Muhasebe Fişi Aktar";
+            this.btn_SlipForm.Click += new System.EventHandler(this.btn_SlipForm_Click);
             // 
             // popupMenu2
             // 
@@ -167,14 +176,14 @@
             this.panelControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelControl1.Location = new System.Drawing.Point(245, 0);
             this.panelControl1.Name = "panelControl1";
-            this.panelControl1.Size = new System.Drawing.Size(924, 606);
+            this.panelControl1.Size = new System.Drawing.Size(1172, 606);
             this.panelControl1.TabIndex = 1;
             // 
             // HomeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1169, 606);
+            this.ClientSize = new System.Drawing.Size(1417, 606);
             this.Controls.Add(this.panelControl1);
             this.Controls.Add(this.accordionControl1);
             this.IconOptions.Image = ((System.Drawing.Image)(resources.GetObject("HomeForm.IconOptions.Image")));
@@ -208,5 +217,6 @@
         private DevExpress.XtraEditors.PanelControl panelControl1;
         private DevExpress.XtraBars.Navigation.AccordionControlElement btn_Logs;
         private DevExpress.XtraBars.Navigation.AccordionControlElement btn_SQLiteCommand;
+        private DevExpress.XtraBars.Navigation.AccordionControlElement btn_SlipForm;
     }
 }

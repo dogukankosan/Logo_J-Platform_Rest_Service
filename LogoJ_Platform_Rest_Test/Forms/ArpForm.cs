@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using LogoJ_Platform_Rest_Test.Bussines;
-using LogoJ_Platform_Rest_Test.Entities;
+using LogoJ_Platform_Rest_Test.Entities.Arps;
 using LogoJ_Platform_Rest_Test.Helper;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;

@@ -11,7 +11,7 @@ namespace LogoJ_Platform_Rest_Test.Helper
     }
     internal static class JPlatformSessionManager
     {
-        public static async Task<(bool Success, string Message, JPlatformSession Session)> StartSessionAsync()
+        internal static async Task<(bool Success, string Message, JPlatformSession Session)> StartSessionAsync()
         {
             var result = await J_PlatformRest.GetAuthTokenAsync();
             if (!result.Success || string.IsNullOrEmpty(result.EncodedToken))
@@ -27,7 +27,7 @@ namespace LogoJ_Platform_Rest_Test.Helper
                 URL = result.URL
             });
         }
-        public static async Task<(bool Success, string Message)> EndSessionAsync(string authToken, string clientToken)
+        internal static async Task<(bool Success, string Message)> EndSessionAsync(string authToken, string clientToken)
         {
             var result = await J_PlatformRest.LogoutTokenAsync(authToken, clientToken);
             if (!result.Success)

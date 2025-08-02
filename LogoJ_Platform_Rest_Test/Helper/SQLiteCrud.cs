@@ -57,7 +57,7 @@ namespace LogoJ_Platform_Rest_Test.Helper
                 }
             }
         }
-        internal static async Task<bool> TestSqlConnectionAsync(string server, string user, string pass, string db, string port, string company, string period)
+        private static async Task<bool> TestSqlConnectionAsync(string server, string user, string pass, string db, string port, string company, string period)
         {
             if (string.IsNullOrWhiteSpace(port)) port = "1433";
             string connStr = $"Server={server},{port};Database={db};User Id={user};Password={pass};Connection Timeout=10;TrustServerCertificate=True;Max Pool Size=100;Min Pool Size=5;Pooling=true;";
@@ -88,7 +88,7 @@ namespace LogoJ_Platform_Rest_Test.Helper
                 }
             }
         }
-        internal static async Task<bool> SaveEncryptedSqlConnectionAsync(string plainConnection, string companyNo, string periodNo)
+        private static async Task<bool> SaveEncryptedSqlConnectionAsync(string plainConnection, string companyNo, string periodNo)
         {
             string encrypted = EncryptionHelper.Encrypt(plainConnection);
             if (string.IsNullOrEmpty(encrypted))

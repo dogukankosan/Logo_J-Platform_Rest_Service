@@ -114,3 +114,12 @@ C:\Users\DOGUKAN\source\repos\LogoJ_Platform_Rest_Test\LogoJ_Platform_Rest_Test\
 C:\Users\DOGUKAN\source\repos\LogoJ_Platform_Rest_Test\LogoJ_Platform_Rest_Test\bin\Debug\ja\DevExpress.XtraRichEdit.v20.1.resources.dll
 C:\Users\DOGUKAN\source\repos\LogoJ_Platform_Rest_Test\LogoJ_Platform_Rest_Test\bin\Debug\ru\DevExpress.XtraRichEdit.v20.1.resources.dll
 C:\Users\DOGUKAN\source\repos\LogoJ_Platform_Rest_Test\LogoJ_Platform_Rest_Test\obj\Debug\LogoJ_Platform_Rest_Test.Forms.SQLiteCommandForm.resources
+C:\Users\DOGUKAN\source\repos\LogoJ_Platform_Rest_Test\LogoJ_Platform_Rest_Test\obj\Debug\LogoJ_Platform_Rest_Test.Forms.SlipTransferForm.resources
+C:\Users\DOGUKAN\source\repos\LogoJ_Platform_Rest_Test\LogoJ_Platform_Rest_Test\bin\Debug\ClosedXML.dll
+C:\Users\DOGUKAN\source\repos\LogoJ_Platform_Rest_Test\LogoJ_Platform_Rest_Test\bin\Debug\DocumentFormat.OpenXml.dll
+C:\Users\DOGUKAN\source\repos\LogoJ_Platform_Rest_Test\LogoJ_Platform_Rest_Test\bin\Debug\ExcelNumberFormat.dll
+C:\Users\DOGUKAN\source\repos\LogoJ_Platform_Rest_Test\LogoJ_Platform_Rest_Test\bin\Debug\System.IO.Packaging.dll
+C:\Users\DOGUKAN\source\repos\LogoJ_Platform_Rest_Test\LogoJ_Platform_Rest_Test\bin\Debug\ClosedXML.pdb
+C:\Users\DOGUKAN\source\repos\LogoJ_Platform_Rest_Test\LogoJ_Platform_Rest_Test\bin\Debug\ClosedXML.xml
+C:\Users\DOGUKAN\source\repos\LogoJ_Platform_Rest_Test\LogoJ_Platform_Rest_Test\bin\Debug\DocumentFormat.OpenXml.xml
+C:\Users\DOGUKAN\source\repos\LogoJ_Platform_Rest_Test\LogoJ_Platform_Rest_Test\bin\Debug\ExcelNumberFormat.xml

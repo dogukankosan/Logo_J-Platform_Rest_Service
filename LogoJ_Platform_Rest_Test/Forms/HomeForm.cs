@@ -13,7 +13,7 @@ namespace LogoJ_Platform_Rest_Test.Forms
             Instance = this;
         }
         internal static HomeForm Instance;
-        internal async void OpenFormInContainer(Form form)
+        internal void OpenFormInContainer(Form form)
         {
             if (form == null) return;
             try
@@ -25,10 +25,9 @@ namespace LogoJ_Platform_Rest_Test.Forms
                 panelControl1.Controls.Add(form);
                 form.Show();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                XtraMessageBox.Show($"Form yüklenirken bir hata oluştu:\n{ex.Message}", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                await TextLog.TextLoggingAsync("Form açma hatası: " + ex.ToString());
+              
             }
         }
         private void btn_restServiceSettings_Click(object sender, EventArgs e)
@@ -84,6 +83,10 @@ namespace LogoJ_Platform_Rest_Test.Forms
                 XtraMessageBox.Show($"Tema kaydetme hatası:\n{ex.Message}", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 await TextLog.TextLoggingAsync("Tema kaydetme hatası: " + ex.ToString());
             }
+        }
+        private void btn_SlipForm_Click(object sender, EventArgs e)
+        {
+            OpenFormInContainer(new SlipTransferForm());
         }
     }
 }
