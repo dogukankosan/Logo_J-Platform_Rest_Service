@@ -243,17 +243,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files...
 ```
 
----
-
-## 📬 İletişim ve Destek
-
-- 👨‍💻 **Geliştirici:** [@dogukankosan](https://github.com/dogukankosan)
-- 📧 **E-posta:** [Email adresi buraya eklenecek]
-- 💼 **LinkedIn:** [LinkedIn profili buraya eklenecek]
-- 🐦 **Twitter:** [Twitter profili buraya eklenecek]
-
----
-
 ## 🏷️ Versiyon Geçmişi
 
 ### v2.1.0 (Güncel)
