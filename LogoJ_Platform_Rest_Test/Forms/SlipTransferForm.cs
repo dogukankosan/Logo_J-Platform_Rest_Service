@@ -19,6 +19,7 @@ using System.Diagnostics;
 using LogoJ_Platform_Rest_Test.Bussines;
 using System.Management;
 using System.IO;
+using DevExpress.XtraSplashScreen;
 
 namespace LogoJ_Platform_Rest_Test.Forms
 {
@@ -32,30 +33,46 @@ namespace LogoJ_Platform_Rest_Test.Forms
         DataTable restInfo;
         private async void btn_Transfer_Click(object sender, EventArgs e)
         {
-            if (gridView1.RowCount==0)
+            if (gridView1.RowCount == 0)
             {
                 XtraMessageBox.Show("Gridde Hiçbir Veri Yok", "Hatalı Grid", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            DataTable excelData = (DataTable)gridControl1.DataSource;
-            if (!await JPlatformHelper.FillSlipNumbersAsync(excelData, dtConnectionSQL.Rows[0]["CompanyNo"].ToString(), dtConnectionSQL.Rows[0]["PeriodNo"].ToString())) return;
-            var sessionResult = await JPlatformSessionManager.StartSessionAsync();
-            if (!sessionResult.Success)
-            {
-                await HandleErrorAsync("Token alınamadı: " + sessionResult.Message);
-                return;
-            }
-            JPlatformSession session = sessionResult.Session;
+            this.Enabled = false;
+            SplashScreenManager.ShowForm(this, typeof(WaitForm1), true, true);
+            SplashScreenManager.Default.SendCommand(WaitForm1.SplashScreenCommand.SetCaption, "Veriler hazırlanıyor...");
             try
             {
+                SplashScreenManager.Default.SendCommand(WaitForm1.SplashScreenCommand.SetCaption, "Excel verisi alınıyor...");
+                DataTable excelData = (DataTable)gridControl1.DataSource;
+                SplashScreenManager.Default.SendCommand(WaitForm1.SplashScreenCommand.SetCaption, "Fiş numaraları dolduruluyor...");
+                if (!await JPlatformHelper.FillSlipNumbersAsync(excelData,
+                    dtConnectionSQL.Rows[0]["CompanyNo"].ToString(),
+                    dtConnectionSQL.Rows[0]["PeriodNo"].ToString()))
+                    return;
+                SplashScreenManager.Default.SendCommand(WaitForm1.SplashScreenCommand.SetCaption, "J-Platform oturumu başlatılıyor...");
+                var sessionResult = await JPlatformSessionManager.StartSessionAsync();
+                if (!sessionResult.Success)
+                {
+                    await HandleErrorAsync("Token alınamadı: " + sessionResult.Message);
+                    return;
+                }
+                JPlatformSession session = sessionResult.Session;
+                SplashScreenManager.Default.SendCommand(WaitForm1.SplashScreenCommand.SetCaption, "Fişler hazırlanıyor...");
                 var slips = BuildAccountSlipsFromGrid(excelData);
                 var slipNumbers = ExtractSlipNumbers(slips);
+                SplashScreenManager.Default.SendCommand(WaitForm1.SplashScreenCommand.SetCaption, "Fişler API'ye gönderiliyor...");
                 int chartNr = cmb_TypeSlip.SelectedIndex;
                 string vtCode = JPlatformHelper.GetVtCode(chartNr);
                 (int successCount, int errorCount) = await SendSlipsToApiAsync(slipNumbers, slips, chartNr, vtCode, session);
+                SplashScreenManager.Default.SendCommand(WaitForm1.SplashScreenCommand.SetCaption, "Sonuçlar hazırlanıyor...");
+                if (SplashScreenManager.Default != null && SplashScreenManager.Default.IsSplashFormVisible)
+                    SplashScreenManager.CloseForm();
+                this.Enabled = true;
                 ShowResultMessage(successCount, errorCount);
                 if (slips.Any())
                     Clipboard.SetText(slips[0].FisNumarasi ?? "");
+                await JPlatformSessionManager.EndSessionAsync(session.AuthToken, session.ClientToken);
             }
             catch (Exception ex)
             {
@@ -64,7 +81,9 @@ namespace LogoJ_Platform_Rest_Test.Forms
             }
             finally
             {
-                await JPlatformSessionManager.EndSessionAsync(session.AuthToken, session.ClientToken);
+                if (SplashScreenManager.Default != null && SplashScreenManager.Default.IsSplashFormVisible)
+                    SplashScreenManager.CloseForm();
+                this.Enabled = true;
             }
         }
         private async void SlipTransferForm_Load(object sender, EventArgs e)

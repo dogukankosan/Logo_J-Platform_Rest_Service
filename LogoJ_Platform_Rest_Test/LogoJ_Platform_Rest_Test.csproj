@@ -151,6 +151,12 @@
     <Compile Include="Forms\SlipTransferForm.Designer.cs">
       <DependentUpon>SlipTransferForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\WaitForm1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\WaitForm1.Designer.cs">
+      <DependentUpon>WaitForm1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\SQLiteCommandForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -190,6 +196,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SlipTransferForm.resx">
       <DependentUpon>SlipTransferForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\WaitForm1.resx">
+      <DependentUpon>WaitForm1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SQLiteCommandForm.resx">
       <DependentUpon>SQLiteCommandForm.cs</DependentUpon>

@@ -123,3 +123,4 @@ C:\Users\DOGUKAN\source\repos\LogoJ_Platform_Rest_Test\LogoJ_Platform_Rest_Test\
 C:\Users\DOGUKAN\source\repos\LogoJ_Platform_Rest_Test\LogoJ_Platform_Rest_Test\bin\Debug\ClosedXML.xml
 C:\Users\DOGUKAN\source\repos\LogoJ_Platform_Rest_Test\LogoJ_Platform_Rest_Test\bin\Debug\DocumentFormat.OpenXml.xml
 C:\Users\DOGUKAN\source\repos\LogoJ_Platform_Rest_Test\LogoJ_Platform_Rest_Test\bin\Debug\ExcelNumberFormat.xml
+C:\Users\DOGUKAN\source\repos\LogoJ_Platform_Rest_Test\LogoJ_Platform_Rest_Test\obj\Debug\LogoJ_Platform_Rest_Test.Forms.WaitForm1.resources
