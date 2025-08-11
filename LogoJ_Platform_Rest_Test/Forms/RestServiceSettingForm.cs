@@ -10,31 +10,47 @@ namespace LogoJ_Platform_Rest_Test.Forms
 {
     public partial class RestServiceSettingForm : XtraForm
     {
-        public RestServiceSettingForm()
+        public RestServiceSettingForm(string companyNR_ = "", bool isCancel_ = true)
         {
+            isCancel = isCancel_;
+            companyNR = companyNR_;
             InitializeComponent();
         }
+        private bool isCancel;
+        private string companyNR = "";
+        private ToolTip toolTip;
         private async void RestServiceSettingForm_Load(object sender, EventArgs e)
         {
+            toolTip = new ToolTip
+            {
+                ToolTipTitle = "Bilgi",
+                ToolTipIcon = ToolTipIcon.Info,
+                IsBalloon = true,
+                UseAnimation = true,
+                UseFading = true,
+                AutoPopDelay = 5000,
+                InitialDelay = 1000,
+                ReshowDelay = 500
+            };
             try
             {
                 txt_URL.Focus();
                 DataTable dt = await SQLiteCrud.GetDataFromSQLiteAsync("SELECT * FROM RestSettings LIMIT 1");
                 if (!DataHelper.IsDataExists(dt))
-                {
-                    txt_CountryLang.Text = "TRTR";
                     return;
-                }
+                if (string.IsNullOrEmpty(companyNR))
+                    txt_CompanyNo.Text = dt.Rows[0]["CompanyNo"].ToString();
+                else
+                    txt_CompanyNo.Text = companyNR;
                 txt_URL.Text = dt.Rows[0]["URL"].ToString();
                 txt_Username.Text = dt.Rows[0]["UserName"].ToString();
-                txt_Password.Text = EncryptionHelper.Decrypt(dt.Rows[0]["Password"].ToString());
-                txt_CompanyNo.Text = dt.Rows[0]["CompanyNo"].ToString();
+                txt_Password.Text = await EncryptionHelper.Decrypt(dt.Rows[0]["Password"].ToString());
                 txt_PeriodNo.Text = dt.Rows[0]["PeriodNo"].ToString();
                 txt_CountryLang.Text = dt.Rows[0]["CountryCode"].ToString();
             }
             catch (Exception ex)
             {
-                await TextLog.TextLoggingAsync("RestSettingForm_Load hatası: " + ex);
+                await TextLog.LogToSQLiteAsync("REST SERVİS FORM","RestSettingForm_Load hatası: " + ex);
                 XtraMessageBox.Show("Ayarlar okunurken bir hata oluştu. Detaylar log dosyasına yazıldı.", "Hatalı Okuma", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -53,6 +69,7 @@ namespace LogoJ_Platform_Rest_Test.Forms
                 if (!result.Success)
                 {
                     XtraMessageBox.Show("Bağlantı hatası: " + result.Message, "Bağlantı Başarısız", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    await TextLog.LogToSQLiteAsync("REST SERVİS FORM","RestSettingForm_Load hatası: Bağlantı Hatası");
                     return;
                 }
                 string query = @"UPDATE RestSettings SET URL = @URL, UserName = @UserName, Password = @Password, CompanyNo = @CompanyNo, PeriodNo = @PeriodNo, CountryCode = @CountryCode;";
@@ -60,7 +77,7 @@ namespace LogoJ_Platform_Rest_Test.Forms
                 {
                     { "@URL", txt_URL.Text.Trim() },
                     { "@UserName", txt_Username.Text.Trim() },
-                    { "@Password", EncryptionHelper.Encrypt(txt_Password.Text.Trim()) },
+                    { "@Password", await EncryptionHelper.Encrypt(txt_Password.Text.Trim()) },
                     { "@CompanyNo", txt_CompanyNo.Text.Trim() },
                     { "@PeriodNo", txt_PeriodNo.Text.Trim() },
                     { "@CountryCode", txt_CountryLang.Text.Trim() }
@@ -69,17 +86,19 @@ namespace LogoJ_Platform_Rest_Test.Forms
                 if (status.Success)
                 {
                     XtraMessageBox.Show("Rest servis ayarları başarıyla güncellendi.", "Başarılı", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    isCancel = true;
                     this.Close();
                 }
                 else
                 {
                     XtraMessageBox.Show("Veritabanına kayıt yapılamadı. Lütfen tekrar deneyin.", "Kayıt Hatası", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    await TextLog.LogToSQLiteAsync("REST SERVİS FORM","Veritabanına kayıt yapılamadı Rest Servis ayarlarında hata");
                     txt_URL.Focus();
                 }
             }
             catch (Exception ex)
             {
-                await TextLog.TextLoggingAsync("btn_Save_Click hatası: " + ex);
+                await TextLog.LogToSQLiteAsync("REST SERVİS FORM","btn_Save_Click hatası: " + ex);
                 XtraMessageBox.Show("Kaydetme sırasında bir hata oluştu. Detaylar log dosyasına yazıldı.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -92,6 +111,20 @@ namespace LogoJ_Platform_Rest_Test.Forms
         {
             if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
                 e.Handled = true;
+        }
+        private void label1_MouseHover(object sender, EventArgs e)
+        {
+            toolTip.SetToolTip(label1, "J-Platform tarayıcan girdiğimiz URL adresi örnek (http://localhost:8080) veya (http://247.63.517.207:1202) sonunda / veya /logo/menu gibi değer olmıyacak sadece sunucun ham IP adresi");
+        }
+        private void RestServiceSettingForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (isCancel == false)
+            {
+                e.Cancel = true;
+                XtraMessageBox.Show("Rest Bağlantısını Tamamlayınız", "Rest Bağlantısı Hatalı", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            isCancel = true;
         }
     }
 }

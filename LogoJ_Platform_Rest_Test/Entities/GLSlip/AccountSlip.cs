@@ -9,6 +9,7 @@ namespace LogoJ_Platform_Rest_Test.Entities.GLSlip
    public class AccountSlip
     {
         public string OrgBirim { get; set; }
+        public string Bolum { get; set; }
 
         public string FisNumarasi { get; set; }
 
@@ -34,7 +35,5 @@ namespace LogoJ_Platform_Rest_Test.Entities.GLSlip
         public string GenelAciklama { get; set; }
 
         public string AnalizDetayKod { get; set; }
-
-        public string Durum { get; set; }
     }
 }

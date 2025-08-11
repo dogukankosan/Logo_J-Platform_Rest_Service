@@ -11,12 +11,12 @@ namespace LogoJ_Platform_Rest_Test.Helper
     }
     internal static class JPlatformSessionManager
     {
-        internal static async Task<(bool Success, string Message, JPlatformSession Session)> StartSessionAsync()
+        internal static async Task<(bool Success, string Message, JPlatformSession Session)> StartSessionAsync(string username,string password,string companyNR)
         {
-            var result = await J_PlatformRest.GetAuthTokenAsync();
+            var result = await J_PlatformRest.GetAuthTokenAsync(username, password, companyNR);
             if (!result.Success || string.IsNullOrEmpty(result.EncodedToken))
             {
-                await TextLog.TextLoggingAsync($"Session başlatılamadı: {result.Message}");
+                await TextLog.LogToSQLiteAsync(username,$"Session başlatılamadı: {result.Message}");
                 return (false, result.Message ?? "Token alınamadı.", null);
             }
             return (true, result.Message ?? "Session OK", new JPlatformSession
@@ -27,11 +27,11 @@ namespace LogoJ_Platform_Rest_Test.Helper
                 URL = result.URL
             });
         }
-        internal static async Task<(bool Success, string Message)> EndSessionAsync(string authToken, string clientToken)
+        internal static async Task<(bool Success, string Message)> EndSessionAsync(string authToken, string clientToken,string username ,string companyNR)
         {
-            var result = await J_PlatformRest.LogoutTokenAsync(authToken, clientToken);
+            var result = await J_PlatformRest.LogoutTokenAsync(authToken, clientToken,username, companyNR);
             if (!result.Success)
-                await TextLog.TextLoggingAsync("Logout başarısız: " + result.Message);
+                await TextLog.LogToSQLiteAsync(username,"Logout başarısız: " + result.Message);
             return result;
         }
     }

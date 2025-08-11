@@ -108,30 +108,54 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bussines\ArpValidator.cs" />
     <Compile Include="Bussines\ExcelHeaderValidator.cs" />
-    <Compile Include="Bussines\ExcelRowValidator.cs" />
+    <Compile Include="Bussines\GLSlipDay\ExcelRowValidator.cs" />
+    <Compile Include="Bussines\GLSlip\ExcelRowValidator.cs" />
     <Compile Include="Bussines\RestSettingValidator.cs" />
     <Compile Include="Bussines\SQLSettingsValidator.cs" />
+    <Compile Include="Entities\GLSlipDay\AccountNumber.cs" />
+    <Compile Include="Entities\GLSlipDay\AccountSlip.cs" />
+    <Compile Include="Entities\GLSlipDay\Analysisdimline.cs" />
+    <Compile Include="Entities\GLSlipDay\LogoGLSlips.cs" />
+    <Compile Include="Entities\GLSlipDay\Slipline.cs" />
+    <Compile Include="Entities\GLSlipDay\Sliplinesourcedetails.cs" />
+    <Compile Include="Entities\GLSlipDay\Slipsourcedetails.cs" />
     <Compile Include="Entities\GLSlip\AccountNumber.cs" />
     <Compile Include="Entities\GLSlip\AccountSlip.cs" />
     <Compile Include="Entities\GLSlip\Analysisdimline.cs" />
-    <Compile Include="Entities\Arps\Arp.cs" />
     <Compile Include="Entities\GLSlip\LogoGSlip.cs" />
     <Compile Include="Entities\GLSlip\Slipline.cs" />
     <Compile Include="Entities\GLSlip\Sliplinesourcedetails.cs" />
     <Compile Include="Entities\GLSlip\Slipsourcedetails.cs" />
-    <Compile Include="Forms\ArpForm.cs">
+    <Compile Include="Forms\DayGlSlipForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\ArpForm.Designer.cs">
-      <DependentUpon>ArpForm.cs</DependentUpon>
+    <Compile Include="Forms\DayGlSlipForm.Designer.cs">
+      <DependentUpon>DayGlSlipForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormCompanyChoose.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormCompanyChoose.Designer.cs">
+      <DependentUpon>FormCompanyChoose.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\HomeForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\HomeForm.Designer.cs">
       <DependentUpon>HomeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\LicenceInputForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LicenceInputForm.Designer.cs">
+      <DependentUpon>LicenceInputForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LoginForm.Designer.cs">
+      <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\LogsForm.cs">
       <SubType>Form</SubType>
@@ -176,17 +200,28 @@
     <Compile Include="Helper\JPlatformHelper.cs" />
     <Compile Include="Helper\JPlatformSession.cs" />
     <Compile Include="Helper\J_PlatformRest.cs" />
+    <Compile Include="Helper\LicenceKeyValidate.cs" />
     <Compile Include="Helper\MyGridLocalizer.cs" />
     <Compile Include="Helper\SQLCrud.cs" />
     <Compile Include="Helper\SQLiteCrud.cs" />
     <Compile Include="Helper\TextLog.cs" />
+    <Compile Include="Helper\TimeHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Forms\ArpForm.resx">
-      <DependentUpon>ArpForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\DayGlSlipForm.resx">
+      <DependentUpon>DayGlSlipForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormCompanyChoose.resx">
+      <DependentUpon>FormCompanyChoose.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\HomeForm.resx">
       <DependentUpon>HomeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LicenceInputForm.resx">
+      <DependentUpon>LicenceInputForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LoginForm.resx">
+      <DependentUpon>LoginForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\LogsForm.resx">
       <DependentUpon>LogsForm.cs</DependentUpon>

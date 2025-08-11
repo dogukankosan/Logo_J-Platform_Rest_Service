@@ -30,7 +30,7 @@ namespace LogoJ_Platform_Rest_Test.Helper
                 }
                 catch (Exception ex)
                 {
-                    await TextLog.TextLoggingAsync($"SQLite sorgu hatası: {ex.Message}");
+                    await TextLog.LogToSQLiteAsync("SQL HATASI", $"SQLite sorgu hatası: {ex.Message}");
                     return null;
                 }
             }
@@ -52,7 +52,7 @@ namespace LogoJ_Platform_Rest_Test.Helper
                 }
                 catch (Exception ex)
                 {
-                    await TextLog.TextLoggingAsync($"SQLite işlem hatası: {ex.Message}");
+                    await TextLog.LogToSQLiteAsync("SQL HATASI", $"SQLite işlem hatası: {ex.Message}");
                     return (false, ex.Message);
                 }
             }
@@ -72,25 +72,25 @@ namespace LogoJ_Platform_Rest_Test.Helper
                     using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
                     {
                         if (!reader.HasRows)
-                            await TextLog.TextLoggingAsync($"Tablo var ama veri yok: {tableName}");
+                            await TextLog.LogToSQLiteAsync("SQL HATASI", $"Tablo var ama veri yok: {tableName}");
                     }
                     return true;
                 }
                 catch (SqlException ex) when (ex.Message.Contains("Invalid object name"))
                 {
-                    await TextLog.TextLoggingAsync($"Tablo bulunamadı: U_{company}_{period}_INVOICES");
+                    await TextLog.LogToSQLiteAsync("SQL HATASI", $"Tablo bulunamadı: U_{company}_{period}_INVOICES");
                     return false;
                 }
                 catch (Exception ex)
                 {
-                    await TextLog.TextLoggingAsync($"SQL bağlantı hatası: {ex.Message}");
+                    await TextLog.LogToSQLiteAsync("SQL HATASI", $"SQL bağlantı hatası: {ex.Message}");
                     return false;
                 }
             }
         }
         private static async Task<bool> SaveEncryptedSqlConnectionAsync(string plainConnection, string companyNo, string periodNo)
         {
-            string encrypted = EncryptionHelper.Encrypt(plainConnection);
+            string encrypted = await EncryptionHelper.Encrypt(plainConnection);
             if (string.IsNullOrEmpty(encrypted))
                 return false;
             Dictionary<string, object> parameters = new Dictionary<string, object>

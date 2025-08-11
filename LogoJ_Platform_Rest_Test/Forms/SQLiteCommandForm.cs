@@ -52,7 +52,7 @@ namespace LogoJ_Platform_Rest_Test.Forms
             }
             catch (Exception ex)
             {
-                await TextLog.TextLoggingAsync("Komut çalıştırma hatası: " + ex);
+                await TextLog.LogToSQLiteAsync("SQLITE KOMUT","Komut çalıştırma hatası: " + ex);
                 XtraMessageBox.Show(ex.Message, "Komut Hatası", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -82,7 +82,7 @@ namespace LogoJ_Platform_Rest_Test.Forms
                 }
             }
         }
-        private void encToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void encToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string selectedText = richTextBox1.SelectedText;
             if (string.IsNullOrWhiteSpace(selectedText))
@@ -92,7 +92,7 @@ namespace LogoJ_Platform_Rest_Test.Forms
             }
             try
             {
-                string decrypted = EncryptionHelper.Decrypt(selectedText);
+                string decrypted = await EncryptionHelper.Decrypt(selectedText);
                 Clipboard.SetText(decrypted);
                 XtraMessageBox.Show(decrypted, "Ram bellekte hafızaya alındı", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }

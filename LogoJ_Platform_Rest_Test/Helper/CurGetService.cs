@@ -13,14 +13,14 @@ namespace LogoJ_Platform_Rest_Test.Helper
 {
    internal class CurGetService
     {
-        internal static decimal GetKurlar(string curCode)
+        internal async static Task<decimal> GetKurlar(string curCode)
         {
             try
             {
                 string url = "https://www.tcmb.gov.tr/kurlar/today.xml";
                 using (WebClient client = new WebClient())
                 {
-                    client.Encoding = System.Text.Encoding.UTF8;
+                    client.Encoding = Encoding.UTF8;
                     string xmlContent = client.DownloadString(url);
                     XDocument doc = XDocument.Parse(xmlContent);
                     decimal value = GetCur(doc, curCode);
@@ -30,12 +30,13 @@ namespace LogoJ_Platform_Rest_Test.Helper
             catch (Exception ex)
             {
                 XtraMessageBox.Show("Döviz kurları alınamadı: " + ex.Message,"Hatalı",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                await TextLog.LogToSQLiteAsync("DÖVİZ KURLARI",ex.Message);
                 return 0;
             }
         }
         private static decimal GetCur(XDocument doc, string currencyCode)
         {
-            var kurNode = doc.Descendants("Currency")
+            XElement kurNode = doc.Descendants("Currency")
                              .FirstOrDefault(x => x.Attribute("CurrencyCode")?.Value == currencyCode);
             if (kurNode != null)
             {

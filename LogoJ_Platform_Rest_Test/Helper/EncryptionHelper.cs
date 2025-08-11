@@ -2,13 +2,15 @@
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
+
 namespace LogoJ_Platform_Rest_Test.Helper
 {
     internal static class EncryptionHelper
     {
         private static readonly byte[] keyBytes = Encoding.UTF8.GetBytes("12345678901234567890123456789012");
         private static readonly byte[] ivBytes = Encoding.UTF8.GetBytes("1234567890123456");
-        internal static string Encrypt(string plainText)
+        internal async static Task<string> Encrypt(string plainText)
         {
             try
             {
@@ -29,11 +31,11 @@ namespace LogoJ_Platform_Rest_Test.Helper
             }
             catch (Exception ex)
             {
-                _ = TextLog.TextLoggingAsync($"Şifreleme hatası: {ex.Message}");
+                await TextLog.LogToSQLiteAsync("Encrypt", $"Şifreleme hatası: {ex.Message}");
                 return null;
             }
         }
-        internal static string Decrypt(string cipherText)
+        internal async static Task<string> Decrypt(string cipherText)
         {
             try
             {
@@ -52,7 +54,7 @@ namespace LogoJ_Platform_Rest_Test.Helper
             }
             catch (Exception ex)
             {
-                _ = TextLog.TextLoggingAsync($"Şifre çözme hatası: {ex.Message}");
+                 await TextLog.LogToSQLiteAsync("Decrypt", $"Şifre çözme hatası: {ex.Message}");
                 return null;
             }
         }

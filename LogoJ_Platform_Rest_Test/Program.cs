@@ -20,11 +20,11 @@ namespace LogoJ_Platform_Rest_Test
                 GridLocalizer.Active = new MyGridLocalizer();
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new HomeForm());
+                Application.Run(new LoginForm());
             }
             catch (Exception ex)
             {
-                _ = TextLog.TextLoggingAsync("Uygulama başlangıcında hata: " + ex.Message);
+                _ = TextLog.LogToSQLiteAsync("UYGULAMA BAŞLANGICI","Uygulama başlangıcında hata: " + ex.Message);
                 XtraMessageBox.Show("Uygulama başlatılamadı. Detaylar log dosyasına yazıldı.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

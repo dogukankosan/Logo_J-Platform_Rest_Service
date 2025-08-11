@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
+using DevExpress.XtraEditors;
 using DevExpress.XtraSplashScreen;
+using LogoJ_Platform_Rest_Test.Helper;
 
 namespace LogoJ_Platform_Rest_Test.Forms
 {
@@ -17,7 +20,6 @@ namespace LogoJ_Platform_Rest_Test.Forms
         public WaitForm1()
         {
             InitializeComponent();
-            this.labelCopyright.Text = "Copyright © 2000-" + DateTime.Now.Year.ToString();
             this.StartPosition = FormStartPosition.CenterParent;
             this.TopMost = true;
             this.peImage.MouseDown += WaitForm1_MouseDown;
@@ -62,7 +64,26 @@ namespace LogoJ_Platform_Rest_Test.Forms
         }
         private void WaitForm1_Load(object sender, EventArgs e)
         {
-
+            labelCopyright.Text = labelCopyright.Text.Replace("2024", DateTime.Now.Year.ToString());
+        }
+        private async void pictureEdit1_Click(object sender, EventArgs e)
+        {
+            const string url = "https://asyen.com.tr"; 
+            try
+            {
+                ProcessStartInfo psi = new ProcessStartInfo
+                {
+                    FileName = url,
+                    UseShellExecute = true
+                };
+                Process.Start(psi);
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show($"Link açılamadı:\n{ex.Message}", "Hata",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                await TextLog.LogToSQLiteAsync("LOG FORM", "Link açma hatası: " + ex);
+            }
         }
     }
 }

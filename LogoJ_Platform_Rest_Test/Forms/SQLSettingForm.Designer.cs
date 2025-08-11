@@ -64,8 +64,9 @@
             this.groupControl1.Controls.Add(this.panel1);
             this.groupControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupControl1.Location = new System.Drawing.Point(0, 0);
+            this.groupControl1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.groupControl1.Name = "groupControl1";
-            this.groupControl1.Size = new System.Drawing.Size(842, 595);
+            this.groupControl1.Size = new System.Drawing.Size(982, 732);
             this.groupControl1.TabIndex = 1;
             this.groupControl1.Text = "SQL Bağlantı Ayarları";
             // 
@@ -89,17 +90,18 @@
             this.panel1.Controls.Add(this.label4);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel1.Location = new System.Drawing.Point(2, 33);
+            this.panel1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(276, 560);
+            this.panel1.Size = new System.Drawing.Size(322, 697);
             this.panel1.TabIndex = 19;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Tahoma", 10.25F);
-            this.label1.Location = new System.Drawing.Point(20, 17);
+            this.label1.Location = new System.Drawing.Point(23, 21);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(104, 17);
+            this.label1.Size = new System.Drawing.Size(134, 22);
             this.label1.TabIndex = 6;
             this.label1.Text = "SQL Server Adı:";
             // 
@@ -107,20 +109,22 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Tahoma", 10.25F);
-            this.label7.Location = new System.Drawing.Point(20, 395);
+            this.label7.Location = new System.Drawing.Point(23, 486);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(114, 17);
+            this.label7.Size = new System.Drawing.Size(145, 22);
             this.label7.TabIndex = 18;
             this.label7.Text = "Logo Dönem No:";
+            this.label7.Visible = false;
             // 
             // txt_ServerName
             // 
-            this.txt_ServerName.Location = new System.Drawing.Point(20, 45);
+            this.txt_ServerName.Location = new System.Drawing.Point(23, 55);
+            this.txt_ServerName.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txt_ServerName.Name = "txt_ServerName";
             this.txt_ServerName.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 10.25F);
             this.txt_ServerName.Properties.Appearance.Options.UseFont = true;
             this.txt_ServerName.Properties.MaxLength = 100;
-            this.txt_ServerName.Size = new System.Drawing.Size(221, 24);
+            this.txt_ServerName.Size = new System.Drawing.Size(258, 28);
             this.txt_ServerName.TabIndex = 0;
             // 
             // btn_Save
@@ -132,41 +136,46 @@
             this.btn_Save.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_Save.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.btn_Save.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btn_Save.ImageOptions.Image")));
-            this.btn_Save.Location = new System.Drawing.Point(0, 511);
+            this.btn_Save.Location = new System.Drawing.Point(0, 637);
+            this.btn_Save.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btn_Save.Name = "btn_Save";
-            this.btn_Save.Size = new System.Drawing.Size(274, 47);
+            this.btn_Save.Size = new System.Drawing.Size(320, 58);
             this.btn_Save.TabIndex = 7;
             this.btn_Save.Text = "Kaydet";
             this.btn_Save.Click += new System.EventHandler(this.btn_Save_Click);
             // 
             // txt_DatabaseName
             // 
-            this.txt_DatabaseName.Location = new System.Drawing.Point(20, 108);
+            this.txt_DatabaseName.Location = new System.Drawing.Point(23, 133);
+            this.txt_DatabaseName.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txt_DatabaseName.Name = "txt_DatabaseName";
             this.txt_DatabaseName.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 10.25F);
             this.txt_DatabaseName.Properties.Appearance.Options.UseFont = true;
             this.txt_DatabaseName.Properties.MaxLength = 100;
-            this.txt_DatabaseName.Size = new System.Drawing.Size(221, 24);
+            this.txt_DatabaseName.Size = new System.Drawing.Size(258, 28);
             this.txt_DatabaseName.TabIndex = 1;
             // 
             // txt_PeriodNo
             // 
-            this.txt_PeriodNo.Location = new System.Drawing.Point(20, 423);
+            this.txt_PeriodNo.EditValue = "01";
+            this.txt_PeriodNo.Location = new System.Drawing.Point(23, 521);
+            this.txt_PeriodNo.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txt_PeriodNo.Name = "txt_PeriodNo";
             this.txt_PeriodNo.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 10.25F);
             this.txt_PeriodNo.Properties.Appearance.Options.UseFont = true;
             this.txt_PeriodNo.Properties.MaxLength = 10;
-            this.txt_PeriodNo.Size = new System.Drawing.Size(221, 24);
+            this.txt_PeriodNo.Size = new System.Drawing.Size(258, 28);
             this.txt_PeriodNo.TabIndex = 6;
+            this.txt_PeriodNo.Visible = false;
             this.txt_PeriodNo.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_PeriodNo_KeyPress);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Tahoma", 10.25F);
-            this.label2.Location = new System.Drawing.Point(20, 80);
+            this.label2.Location = new System.Drawing.Point(23, 98);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(92, 17);
+            this.label2.Size = new System.Drawing.Size(119, 22);
             this.label2.TabIndex = 8;
             this.label2.Text = "Database Adı:";
             // 
@@ -174,30 +183,32 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Tahoma", 10.25F);
-            this.label6.Location = new System.Drawing.Point(20, 332);
+            this.label6.Location = new System.Drawing.Point(23, 409);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(102, 17);
+            this.label6.Size = new System.Drawing.Size(132, 22);
             this.label6.TabIndex = 16;
             this.label6.Text = "Logo Firma No:";
             // 
             // txt_Username
             // 
-            this.txt_Username.Location = new System.Drawing.Point(20, 171);
+            this.txt_Username.Location = new System.Drawing.Point(23, 210);
+            this.txt_Username.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txt_Username.Name = "txt_Username";
             this.txt_Username.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 10.25F);
             this.txt_Username.Properties.Appearance.Options.UseFont = true;
             this.txt_Username.Properties.MaxLength = 50;
-            this.txt_Username.Size = new System.Drawing.Size(221, 24);
+            this.txt_Username.Size = new System.Drawing.Size(258, 28);
             this.txt_Username.TabIndex = 2;
             // 
             // txt_CompanyNo
             // 
-            this.txt_CompanyNo.Location = new System.Drawing.Point(20, 360);
+            this.txt_CompanyNo.Location = new System.Drawing.Point(23, 443);
+            this.txt_CompanyNo.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txt_CompanyNo.Name = "txt_CompanyNo";
             this.txt_CompanyNo.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 10.25F);
             this.txt_CompanyNo.Properties.Appearance.Options.UseFont = true;
             this.txt_CompanyNo.Properties.MaxLength = 10;
-            this.txt_CompanyNo.Size = new System.Drawing.Size(221, 24);
+            this.txt_CompanyNo.Size = new System.Drawing.Size(258, 28);
             this.txt_CompanyNo.TabIndex = 5;
             this.txt_CompanyNo.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_CompanyNo_KeyPress);
             // 
@@ -205,9 +216,9 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Tahoma", 10.25F);
-            this.label3.Location = new System.Drawing.Point(20, 143);
+            this.label3.Location = new System.Drawing.Point(23, 176);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(110, 17);
+            this.label3.Size = new System.Drawing.Size(149, 22);
             this.label3.TabIndex = 10;
             this.label3.Text = "SQL Kullanıcı Adı:";
             // 
@@ -215,31 +226,33 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Tahoma", 10.25F);
-            this.label5.Location = new System.Drawing.Point(20, 269);
+            this.label5.Location = new System.Drawing.Point(23, 331);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(68, 17);
+            this.label5.Size = new System.Drawing.Size(86, 22);
             this.label5.TabIndex = 14;
             this.label5.Text = "SQL Port:";
             // 
             // txt_Password
             // 
-            this.txt_Password.Location = new System.Drawing.Point(20, 234);
+            this.txt_Password.Location = new System.Drawing.Point(23, 288);
+            this.txt_Password.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txt_Password.Name = "txt_Password";
             this.txt_Password.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 10.25F);
             this.txt_Password.Properties.Appearance.Options.UseFont = true;
             this.txt_Password.Properties.MaxLength = 100;
             this.txt_Password.Properties.PasswordChar = '*';
-            this.txt_Password.Size = new System.Drawing.Size(221, 24);
+            this.txt_Password.Size = new System.Drawing.Size(258, 28);
             this.txt_Password.TabIndex = 3;
             // 
             // txt_Port
             // 
-            this.txt_Port.Location = new System.Drawing.Point(20, 297);
+            this.txt_Port.Location = new System.Drawing.Point(23, 366);
+            this.txt_Port.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txt_Port.Name = "txt_Port";
             this.txt_Port.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 10.25F);
             this.txt_Port.Properties.Appearance.Options.UseFont = true;
             this.txt_Port.Properties.MaxLength = 5;
-            this.txt_Port.Size = new System.Drawing.Size(221, 24);
+            this.txt_Port.Size = new System.Drawing.Size(258, 28);
             this.txt_Port.TabIndex = 4;
             this.txt_Port.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_Port_KeyPress);
             // 
@@ -247,25 +260,27 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Tahoma", 10.25F);
-            this.label4.Location = new System.Drawing.Point(20, 206);
+            this.label4.Location = new System.Drawing.Point(23, 254);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(68, 17);
+            this.label4.Size = new System.Drawing.Size(89, 22);
             this.label4.TabIndex = 12;
             this.label4.Text = "SQL Şifre:";
             // 
             // SQLSettingForm
             // 
             this.AcceptButton = this.btn_Save;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(842, 595);
+            this.ClientSize = new System.Drawing.Size(982, 732);
             this.Controls.Add(this.groupControl1);
             this.IconOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("SQLSettingForm.IconOptions.LargeImage")));
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.MaximizeBox = false;
             this.Name = "SQLSettingForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SQL Bağlantı Ayarları";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SQLSettingForm_FormClosing);
             this.Load += new System.EventHandler(this.SQLSettingForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).EndInit();
             this.groupControl1.ResumeLayout(false);
@@ -287,7 +302,6 @@
         private DevExpress.XtraEditors.GroupControl groupControl1;
         private System.Windows.Forms.Label label6;
         private DevExpress.XtraEditors.SimpleButton btn_Save;
-        private DevExpress.XtraEditors.TextEdit txt_CompanyNo;
         private System.Windows.Forms.Label label5;
         private DevExpress.XtraEditors.TextEdit txt_Port;
         private System.Windows.Forms.Label label4;
@@ -301,5 +315,6 @@
         private System.Windows.Forms.Label label7;
         private DevExpress.XtraEditors.TextEdit txt_PeriodNo;
         private System.Windows.Forms.Panel panel1;
+        public DevExpress.XtraEditors.TextEdit txt_CompanyNo;
     }
 }

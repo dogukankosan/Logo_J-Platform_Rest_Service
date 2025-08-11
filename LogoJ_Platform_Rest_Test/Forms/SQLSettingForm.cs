@@ -9,10 +9,14 @@ namespace LogoJ_Platform_Rest_Test.Forms
 {
     public partial class SQLSettingForm : XtraForm
     {
-        public SQLSettingForm()
+        public SQLSettingForm(string companyNR_ = "", bool notConnect_ = true)
         {
+            companyNr = companyNR_;
+            notConnect = notConnect_;
             InitializeComponent();
         }
+        private string companyNr = "";
+        private bool notConnect;
         private async void SQLSettingForm_Load(object sender, EventArgs e)
         {
             txt_ServerName.Focus();
@@ -22,9 +26,21 @@ namespace LogoJ_Platform_Rest_Test.Forms
                 return;
             try
             {
-                txt_CompanyNo.Text = dt.Rows[0]["CompanyNo"].ToString();
+          
+                if (string.IsNullOrEmpty(companyNr))
+                    txt_CompanyNo.Text = dt.Rows[0]["CompanyNo"].ToString();
+                else
+                    txt_CompanyNo.Text=companyNr;
+
+                if (txt_CompanyNo.Text.Length==1)
+                    txt_CompanyNo.Text = "00" + txt_CompanyNo.Text;
+                if (txt_CompanyNo.Text.Length == 2)
+                    txt_CompanyNo.Text = "0" + txt_CompanyNo.Text;
                 txt_PeriodNo.Text = dt.Rows[0]["PeriodNo"].ToString();
-                string[] parameters = EncryptionHelper.Decrypt(dt.Rows[0]["ConnectString"].ToString()).Split(';');
+                if (notConnect)
+                    txt_CompanyNo.Text = dt.Rows[0]["CompanyNo"].ToString();
+                string decrypted = await EncryptionHelper.Decrypt(dt.Rows[0]["ConnectString"].ToString());
+                string[] parameters = decrypted.Split(';');
                 string port = string.Empty;
                 foreach (string parameter in parameters)
                 {
@@ -67,7 +83,7 @@ namespace LogoJ_Platform_Rest_Test.Forms
             catch (Exception ex)
             {
                 XtraMessageBox.Show("Ayarları okurken hata oluştu.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                await TextLog.TextLoggingAsync("SQLSettingForm Load Hatası: " + ex);
+                await TextLog.LogToSQLiteAsync("SQL FORM","SQLSettingForm Load Hatası: " + ex);
             }
         }
         private async void btn_Save_Click(object sender, EventArgs e)
@@ -90,12 +106,13 @@ namespace LogoJ_Platform_Rest_Test.Forms
                     return;
                 }
                 XtraMessageBox.Show("MSSQL bağlantısı başarılı", "Başarılı", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                notConnect = true;
                 this.Close();
             }
             catch (Exception ex)
             {
                 XtraMessageBox.Show("Kaydetme işlemi sırasında hata oluştu.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                await TextLog.TextLoggingAsync("SQLSettingForm Save Hatası: " + ex);
+                await TextLog.LogToSQLiteAsync("SQL FORM","SQLSettingForm Save Hatası: " + ex);
             }
         }
         private void txt_CompanyNo_KeyPress(object sender, KeyPressEventArgs e)
@@ -112,6 +129,16 @@ namespace LogoJ_Platform_Rest_Test.Forms
         {
             if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
                 e.Handled = true;
+        }
+        private void SQLSettingForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (notConnect==false)
+            {
+                e.Cancel = true;
+                XtraMessageBox.Show("SQL Bağlantısını Tamamlayınız","SQL Bağlantısı Hatalı",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                return;
+            }
+            notConnect = true;
         }
     }
 }

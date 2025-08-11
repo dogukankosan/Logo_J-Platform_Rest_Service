@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Data;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
@@ -16,33 +16,48 @@ namespace LogoJ_Platform_Rest_Test.Forms
         }
         private class LogItem
         {
-            public string UILog { get; set; }
+            public string UserName { get; set; }
+            public string Details { get; set; }
+            public string Date_ { get; set; }
         }
-        private string LogFilePath => Path.Combine(Application.StartupPath, "Logs", "UILog.txt");
-        private async Task<List<LogItem>> ReadLogs()
+        private async Task<List<LogItem>> ReadLogsFromSQLite()
         {
-            List<LogItem> list = new List<LogItem>();
+            List<LogItem> logs = new List<LogItem>();
             try
             {
-                if (File.Exists(LogFilePath))
+                const string query = "SELECT UserName, Details, Date_ FROM ErrorLogs ORDER BY Date_ DESC";
+                DataTable dt = await SQLiteCrud.GetDataFromSQLiteAsync(query);
+                if (dt == null || dt.Rows.Count == 0)
+                    return logs;
+                foreach (DataRow row in dt.Rows)
                 {
-                    string[] lines = File.ReadAllLines(LogFilePath);
-                    foreach (string line in lines)
-                        list.Add(new LogItem { UILog = line });
+                    string dateRaw = row["Date_"]?.ToString();
+                    string dateFormatted = dateRaw;
+                    if (DateTime.TryParse(dateRaw, out var date))
+                        dateFormatted = date.ToString("yyyy-MM-dd HH:mm:ss");
+                    logs.Add(new LogItem
+                    {
+                        UserName = row["UserName"]?.ToString(),
+                        Details = row["Details"]?.ToString(),
+                        Date_ = dateFormatted
+                    });
                 }
             }
             catch (Exception ex)
             {
-                XtraMessageBox.Show($"Log okuma hatası:\n{ex.Message}", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                await TextLog.TextLoggingAsync("Log okuma hatası: " + ex.ToString());
+                XtraMessageBox.Show("SQLite log okuma hatası:\n" + ex.Message, "Hata",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                await TextLog.LogToSQLiteAsync("LOG FORM", "SQLite log okuma exception: " + ex);
             }
-            return list;
+            return logs;
         }
         private async void LogsForm_Load(object sender, EventArgs e)
         {
-            gridControl1.DataSource =await ReadLogs();
+            gridControl1.DataSource = await ReadLogsFromSQLite();
             GridViewDesigner.CustomizeGrid(gridView1);
-            gridView1.Columns["UILog"].Caption = "Log Mesajı";
+            gridView1.Columns["UserName"].Caption = "Kullanıcı || Form";
+            gridView1.Columns["Details"].Caption = "Detay";
+            gridView1.Columns["Date_"].Caption = "Tarih";
             gridView1.OptionsBehavior.ReadOnly = true;
             gridView1.OptionsBehavior.Editable = false;
         }
@@ -54,7 +69,7 @@ namespace LogoJ_Platform_Rest_Test.Forms
                 {
                     Filter = "Excel Dosyası (*.xlsx)|*.xlsx",
                     Title = "Excel'e Aktar",
-                    FileName = "UILog.xlsx"
+                    FileName = "ErrorLogs.xlsx"
                 })
                 {
                     if (saveDialog.ShowDialog() == DialogResult.OK)
@@ -67,24 +82,28 @@ namespace LogoJ_Platform_Rest_Test.Forms
             }
             catch (Exception ex)
             {
-                XtraMessageBox.Show($"Excel aktarım hatası:\n{ex.Message}", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                await TextLog.TextLoggingAsync("Excel aktarım hatası: " + ex.ToString());
+                XtraMessageBox.Show("Excel aktarım hatası:\n" + ex.Message, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                await TextLog.LogToSQLiteAsync("LOG FORM", "Excel aktarım hatası: " + ex.ToString());
             }
         }
         private async void temizleToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
-                if (File.Exists(LogFilePath))
-                    File.WriteAllText(LogFilePath, string.Empty);
-                gridControl1.DataSource = await ReadLogs();
-                gridView1.RefreshData();
-                XtraMessageBox.Show("Log dosyası başarıyla temizlendi.", "Bilgi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                string query = "DELETE FROM ErrorLogs";
+                var result = await SQLiteCrud.InsertUpdateDeleteAsync(query, new Dictionary<string, object>());
+                if (result.Success)
+                {
+                    gridControl1.DataSource = await ReadLogsFromSQLite();
+                    gridView1.RefreshData();
+                    XtraMessageBox.Show("SQLite logları başarıyla silindi.", "Bilgi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                    throw new Exception(result.ErrorMessage);
             }
             catch (Exception ex)
             {
-                XtraMessageBox.Show($"Log temizleme hatası:\n{ex.Message}", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                await TextLog.TextLoggingAsync("Log temizleme hatası: " + ex.ToString());
+                XtraMessageBox.Show("Log temizleme hatası:\n" + ex.Message, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

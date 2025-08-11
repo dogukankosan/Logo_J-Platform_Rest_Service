@@ -22,7 +22,7 @@ namespace LogoJ_Platform_Rest_Test.Helper
                     XtraMessageBox.Show("SQL Bağlantısı boş lütfen SQL bağlantısı yapınız","Hatalı SQL Bağlantısı",MessageBoxButtons.OK,MessageBoxIcon.Error);
                     return false;
                 }
-                using (SqlConnection conn = new SqlConnection(EncryptionHelper.Decrypt(connectionDt.Rows[0][0].ToString())))
+                using (SqlConnection conn = new SqlConnection(await EncryptionHelper.Decrypt(connectionDt.Rows[0][0].ToString())))
                 {
                     await conn.OpenAsync();
                     using (SqlCommand cmd = new SqlCommand(query, conn))
@@ -40,7 +40,7 @@ namespace LogoJ_Platform_Rest_Test.Helper
             catch (Exception ex)
             {
                 XtraMessageBox.Show(ex.Message, "Hatalı Veritabanı İşlemi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                await TextLog.TextLoggingAsync($"[ExecuteCrudAsync] {ex}");
+                await TextLog.LogToSQLiteAsync("SQLCRUD",$"[ExecuteCrudAsync] {ex}");
                 return false;
             }
         }
@@ -54,7 +54,7 @@ namespace LogoJ_Platform_Rest_Test.Helper
             }
             try
             {
-                using (SqlConnection conn = new SqlConnection(EncryptionHelper.Decrypt(connectionDt.Rows[0][0].ToString())))
+                using (SqlConnection conn = new SqlConnection(await EncryptionHelper.Decrypt(connectionDt.Rows[0][0].ToString())))
                 {
                     await conn.OpenAsync();
                     using (SqlCommand cmd = new SqlCommand(query, conn))
@@ -71,11 +71,11 @@ namespace LogoJ_Platform_Rest_Test.Helper
             catch (Exception ex)
             {
                 XtraMessageBox.Show(ex.Message, "Hatalı Sorgu İşlemi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                await TextLog.TextLoggingAsync($"[ExecuteScalarAsync] {ex}");
+                await TextLog.LogToSQLiteAsync("SQL HATASI",$"[ExecuteScalarAsync] {ex}");
                 return null;
             }
         }
-        internal static async Task<DataTable> GetDataTableAsync(string query, Dictionary<string, object> parameters = null)
+        internal static async Task<DataTable> GetDataTableAsync(string query,Dictionary<string, object> parameters=null)
         {
             DataTable connectionDt = await SQLiteCrud.GetDataFromSQLiteAsync("SELECT ConnectString FROM SQLConnectionString LIMIT 1", null);
             if (!DataHelper.IsDataExists(connectionDt))
@@ -85,7 +85,7 @@ namespace LogoJ_Platform_Rest_Test.Helper
             }
             try
             {
-                using (SqlConnection conn = new SqlConnection(EncryptionHelper.Decrypt(connectionDt.Rows[0][0].ToString())))
+                using (SqlConnection conn = new SqlConnection(await EncryptionHelper.Decrypt(connectionDt.Rows[0][0].ToString())))
                 {
                     await conn.OpenAsync();
                     using (SqlCommand cmd = new SqlCommand(query, conn))
@@ -107,7 +107,7 @@ namespace LogoJ_Platform_Rest_Test.Helper
             catch (Exception ex)
             {
                 XtraMessageBox.Show(ex.Message, "Hatalı Veri Çekme İşlemi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                await TextLog.TextLoggingAsync($"[GetDataTableAsync] {ex}");
+                await TextLog.LogToSQLiteAsync("SQLCRUD",$"[GetDataTableAsync] {ex}");
                 return null;
             }
         }

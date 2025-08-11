@@ -12,13 +12,6 @@ namespace LogoJ_Platform_Rest_Test.Bussines
     internal class ExcelHeaderValidator
     {
         private readonly List<string> _expectedHeaders;
-        internal static readonly List<string> ExpectedHeaders = new List<string>
-    {
-        "ORG BIRIM", "TARIH", "FIS NUMARASI", "BELGE NO", "OZEL KOD",
-        "ANA HESAP PLANI", "IKINCI HESAP PLANI", "UCUNCU HESAP PLANI",
-        "BORC", "ALACAK", "DOVIZ CINSI", "KUR", "SATIR ACIKLAMA",
-        "SATIR OZEL KOD", "GENEL ACIKLAMA", "ANALIZ DETAY"
-    };
         internal ExcelHeaderValidator(List<string> expectedHeaders)
         {
             _expectedHeaders = expectedHeaders;
