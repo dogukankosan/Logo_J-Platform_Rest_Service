@@ -24,6 +24,8 @@ namespace LogoJ_Platform_Rest_Test.Entities.GLSlip
 
         public int currencyTypeTC { get; set; }
 
+        public double amountTC { get; set; }
+
         public double tcRate { get; set; }
 
         public double rcRate { get; set; }

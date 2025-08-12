@@ -41,12 +41,13 @@
             // txt_Key
             // 
             this.txt_Key.EditValue = "";
-            this.txt_Key.Location = new System.Drawing.Point(134, 48);
+            this.txt_Key.Location = new System.Drawing.Point(170, 60);
+            this.txt_Key.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txt_Key.Name = "txt_Key";
             this.txt_Key.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 10.25F);
             this.txt_Key.Properties.Appearance.Options.UseFont = true;
             this.txt_Key.Properties.MaxLength = 500;
-            this.txt_Key.Size = new System.Drawing.Size(221, 24);
+            this.txt_Key.Size = new System.Drawing.Size(258, 28);
             this.txt_Key.TabIndex = 1;
             // 
             // btn_Save
@@ -58,9 +59,10 @@
             this.btn_Save.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_Save.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.btn_Save.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btn_Save.ImageOptions.Image")));
-            this.btn_Save.Location = new System.Drawing.Point(0, 96);
+            this.btn_Save.Location = new System.Drawing.Point(0, 118);
+            this.btn_Save.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btn_Save.Name = "btn_Save";
-            this.btn_Save.Size = new System.Drawing.Size(390, 47);
+            this.btn_Save.Size = new System.Drawing.Size(455, 58);
             this.btn_Save.TabIndex = 2;
             this.btn_Save.Text = "Kaydet";
             this.btn_Save.Click += new System.EventHandler(this.btn_Save_Click);
@@ -69,9 +71,9 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Tahoma", 10.25F);
-            this.label1.Location = new System.Drawing.Point(25, 51);
+            this.label1.Location = new System.Drawing.Point(29, 63);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(103, 17);
+            this.label1.Size = new System.Drawing.Size(135, 22);
             this.label1.TabIndex = 8;
             this.label1.Text = "Lisans Anahtarı:";
             // 
@@ -79,36 +81,38 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Tahoma", 10.25F);
-            this.label2.Location = new System.Drawing.Point(25, 9);
+            this.label2.Location = new System.Drawing.Point(29, 11);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(68, 17);
+            this.label2.Size = new System.Drawing.Size(90, 22);
             this.label2.TabIndex = 9;
             this.label2.Text = "Firma Adı:";
             // 
             // txt_CompanyName
             // 
             this.txt_CompanyName.EditValue = "";
-            this.txt_CompanyName.Location = new System.Drawing.Point(134, 6);
+            this.txt_CompanyName.Location = new System.Drawing.Point(170, 8);
+            this.txt_CompanyName.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txt_CompanyName.Name = "txt_CompanyName";
             this.txt_CompanyName.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 10.25F);
             this.txt_CompanyName.Properties.Appearance.Options.UseFont = true;
             this.txt_CompanyName.Properties.MaxLength = 250;
-            this.txt_CompanyName.Size = new System.Drawing.Size(221, 24);
+            this.txt_CompanyName.Size = new System.Drawing.Size(258, 28);
             this.txt_CompanyName.TabIndex = 0;
             // 
             // LicenceInputForm
             // 
             this.AcceptButton = this.btn_Save;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(390, 143);
+            this.ClientSize = new System.Drawing.Size(455, 176);
             this.Controls.Add(this.txt_CompanyName);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btn_Save);
             this.Controls.Add(this.txt_Key);
             this.IconOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("LicenceInputForm.IconOptions.LargeImage")));
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.MaximizeBox = false;
             this.Name = "LicenceInputForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

@@ -18,6 +18,14 @@ using DevExpress.XtraSplashScreen;
 using ClosedXML.Excel;
 using LogoJ_Platform_Rest_Test.Bussines;
 using LogoJ_Platform_Rest_Test.Bussines.GLSlipDay;
+using DevExpress.XtraGauges.Win.Gauges.Digital;
+using System.Drawing.Drawing2D;
+using DevExpress.XtraGauges.Core.Base;
+using DevExpress.XtraGauges.Core.Drawing;
+using DevExpress.XtraGauges.Win.Gauges.Circular;
+using DevExpress.XtraGrid.Columns;
+using DevExpress.XtraGrid.Views.Grid;
+using System.Globalization;
 
 namespace LogoJ_Platform_Rest_Test.Forms
 {
@@ -42,7 +50,7 @@ namespace LogoJ_Platform_Rest_Test.Forms
         {
             try
             {
-                string filePath = Path.Combine(Application.StartupPath, "Template", "Muhasebe Günlük Fişi.xlsx");
+                string filePath = Path.Combine(Application.StartupPath, "Template", "Muhasebe Gunluk Fisi.xlsx");
                 if (!File.Exists(filePath))
                 {
                     TextLog.LogToSQLiteAsync(username, $"Template dosyası bulunamadı: {filePath}").Wait();
@@ -118,14 +126,17 @@ namespace LogoJ_Platform_Rest_Test.Forms
                     XtraMessageBox.Show("Gridde Hiçbir Veri Yok", "Hatalı Grid", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
+                if (gridView1.GroupCount > 0)
+                    gridView1.ClearGrouping();
                 this.Enabled = false;
                 SplashScreenManager.ShowForm(this, typeof(WaitForm1), true, true);
                 SplashScreenManager.Default.SendCommand(WaitForm1.SplashScreenCommand.SetCaption, "Veriler hazırlanıyor...");
                 SplashScreenManager.Default.SendCommand(WaitForm1.SplashScreenCommand.SetCaption, "Excel verisi alınıyor...");
-                DataTable excelData = (DataTable)gridControl1.DataSource;
+                DataTable excelData = ((DataTable)gridControl1.DataSource);
                 if (excelData == null || excelData.Rows.Count == 0)
                 {
-                    await TextLog.LogToSQLiteAsync(username, "Excel verisi null veya boş");
+                    await TextLog.LogToSQLiteAsync(username, "Hiç fiş seçilmedi.");
+                    XtraMessageBox.Show("Lütfen en az bir fiş seçiniz.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 SplashScreenManager.Default.SendCommand(WaitForm1.SplashScreenCommand.SetCaption, "Fiş numaraları dolduruluyor...");
@@ -391,7 +402,7 @@ namespace LogoJ_Platform_Rest_Test.Forms
                                 errorCount++;
                                 continue;
                             }
-                       
+
                             client.DefaultRequestHeaders.Add("auth-token", session.EncodedToken);
                             StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
                             HttpResponseMessage response = await client.PostAsync(url, content);
@@ -510,7 +521,7 @@ namespace LogoJ_Platform_Rest_Test.Forms
                         catch (Exception kurEx)
                         {
                             await TextLog.LogToSQLiteAsync(username, $"BuildLogoGSlip: Kur alma hatası: {kurEx.Message}");
-                            rcRate = 1.0; 
+                            rcRate = 1.0;
                         }
                         slip.slipLines.Add(new Slipline
                         {
@@ -521,6 +532,7 @@ namespace LogoJ_Platform_Rest_Test.Forms
                             description = f.SatirAciklama,
                             currencyTypeTC = JPlatformHelper.GetCurrLogical(f.DovizCinsi),
                             tcRate = Convert.ToDouble(f.Kur),
+                            amountTC = JPlatformHelper.GetCurrLogical(f.DovizCinsi) == 0 || JPlatformHelper.GetCurrLogical(f.DovizCinsi) == 160 ? 1 : (f.Alacak + f.Borc) / f.Kur,
                             rcRate = rcRate,
                             dateOfSource = lineDate.ToString("yyyy-MM-dd") + "T10:00:00.000+03:00",
                             dueDate = lineDate.ToString("yyyy-MM-dd") + "T10:00:00.000+03:00",
@@ -589,13 +601,13 @@ namespace LogoJ_Platform_Rest_Test.Forms
                         return;
                     }
                     Dictionary<string, object> checkParams = new Dictionary<string, object>
-                    {
-                        { "@userName", username }
-                    };
+            {
+                { "@userName", username }
+            };
                     DataTable dtUser = await SQLiteCrud.GetDataFromSQLiteAsync(
                         "SELECT CompanyNR FROM UserSQL WHERE UserName = @userName COLLATE NOCASE",
                         checkParams);
-                    if (dtUser is null || dtUser.Rows.Count == 0)
+                    if (dtUser == null || dtUser.Rows.Count == 0)
                     {
                         await TextLog.LogToSQLiteAsync(username, "Excel yüklerken kullanıcı bulunamadı");
                         XtraMessageBox.Show("Kullanıcı Bulunamadı", "Hatalı", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -634,12 +646,115 @@ namespace LogoJ_Platform_Rest_Test.Forms
                     GridViewDesigner.CustomizeGrid(gridView1);
                     gridControl1.DataSource = dt;
                     gridView1.BestFitColumns();
+                    SayaciGuncelle();
                 }
             }
             catch (Exception ex)
             {
                 await TextLog.LogToSQLiteAsync(username, $"Excel okuma genel hatası: {ex.Message} - StackTrace: {ex.StackTrace}");
                 XtraMessageBox.Show("Excel dosyası okunurken bir hata oluştu:\n" + ex.Message, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private async void ficheGroupToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (gridView1.Columns["FIS NUMARASI"] != null)
+                {
+                    gridView1.ClearGrouping();
+                    gridView1.Columns["FIS NUMARASI"].GroupIndex = 0;
+                    gridView1.ExpandAllGroups();
+                    SayaciGuncelle();
+                }
+                else
+                {
+                    await TextLog.LogToSQLiteAsync(username, "FIS NUMARASI sütunu bulunamadı - gruplama yapılamadı");
+                    XtraMessageBox.Show("FIS NUMARASI sütunu bulunamadı!", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                await TextLog.LogToSQLiteAsync(username, $"Gruplama hatası: {ex.Message}");
+                XtraMessageBox.Show($"Gruplama işlemi sırasında hata oluştu: {ex.Message}", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private void SayaciGuncelle()
+        {
+            try
+            {
+                CultureInfo culture = new CultureInfo("en-US");
+                int rowCount = gridView1.DataRowCount;
+                if (rowCount == 0)
+                {
+                    SetGaugeText(digitalGauge5, "0");
+                    SetGaugeText(digitalGauge6, "0");
+                    lbl_debit.Text = "0,00";
+                    lbl_credit.Text = "0,00";
+                    richTextBox1.Clear();
+                    return;
+                }
+                HashSet<string> uniqueKeys = new HashSet<string>();
+                bool fisVar = gridView1.Columns.ColumnByFieldName("FIS NUMARASI") != null;
+                bool belgeVar = gridView1.Columns.ColumnByFieldName("BELGE NO") != null;
+                double toplamBorc = 0;
+                double toplamAlacak = 0;
+                StringBuilder fisListesi = new StringBuilder();
+                for (int i = 0; i < gridView1.RowCount; i++)
+                {
+                    if (gridView1.IsGroupRow(i))
+                        continue;
+                    string key = null;
+                    if (fisVar)
+                        key = gridView1.GetRowCellValue(i, "FIS NUMARASI")?.ToString();
+                    if (string.IsNullOrWhiteSpace(key) && belgeVar)
+                        key = gridView1.GetRowCellValue(i, "BELGE NO")?.ToString();
+                    if (!string.IsNullOrWhiteSpace(key))
+                    {
+                        if (uniqueKeys.Add(key))
+                            fisListesi.AppendLine(key); 
+                    }
+                    string borcStr = gridView1.GetRowCellValue(i, "BORC")?.ToString() ?? "0";
+                    string alacakStr = gridView1.GetRowCellValue(i, "ALACAK")?.ToString() ?? "0";
+                    if (double.TryParse(borcStr, NumberStyles.Any, culture, out double borc))
+                        toplamBorc += borc;
+                    if (double.TryParse(alacakStr, NumberStyles.Any, culture, out double alacak))
+                        toplamAlacak += alacak;
+                }
+                int fisCount = uniqueKeys.Count;
+                SetGaugeText(digitalGauge5, fisCount.ToString());
+                SetGaugeText(digitalGauge6, rowCount.ToString());
+                var trCulture = new CultureInfo("tr-TR");
+                lbl_debit.Text = toplamBorc.ToString("N2", trCulture);
+                lbl_credit.Text = toplamAlacak.ToString("N2", trCulture);
+                richTextBox1.Clear();
+                richTextBox1.Text = fisListesi.ToString();
+            }
+            catch (Exception ex)
+            {
+                TextLog.LogToSQLiteAsync(username, $"Sayaç güncelleme hatası: {ex.Message}").Wait();
+                SetGaugeText(digitalGauge5, "0");
+                SetGaugeText(digitalGauge6, "0");
+                lbl_debit.Text = "0,00";
+                lbl_credit.Text = "0,00";
+                richTextBox1.Clear();
+            }
+        }
+        private void SetGaugeText(DigitalGauge gauge, string text)
+        {
+            if (gauge != null)
+                gauge.Text = text;
+        }
+        private async void ficheUnGroupToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                gridView1.ClearGrouping();
+                SayaciGuncelle(); 
+            }
+            catch (Exception ex)
+            {
+                await TextLog.LogToSQLiteAsync(username, $"Grup kaldırma hatası: {ex.Message}");
+                XtraMessageBox.Show($"Grup kaldırma işlemi sırasında hata oluştu: {ex.Message}", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

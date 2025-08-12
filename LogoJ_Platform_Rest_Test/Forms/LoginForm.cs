@@ -160,7 +160,7 @@ namespace LogoJ_Platform_Rest_Test.Forms
                 dtCompany = await SQLCrud.GetDataTableAsync(
                     "SELECT COMPANYNR, DESCRIPTION FROM S_COMPANIES WITH (NOLOCK) WHERE COMPANYNR = @COMPANYNR",
                     new Dictionary<string, object> { { "@COMPANYNR", companyNr.TrimStart('0') } });
-                if (!DataHelper.IsDataExists(dtCompany))
+                if (DataHelper.IsDataExists(dtCompany))
                 {
                     companyNr = dtCompany.Rows[0]["COMPANYNR"].ToString();
                     companyName = dtCompany.Rows[0]["DESCRIPTION"].ToString();

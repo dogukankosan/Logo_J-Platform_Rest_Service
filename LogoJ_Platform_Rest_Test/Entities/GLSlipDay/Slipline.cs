@@ -18,6 +18,8 @@ namespace LogoJ_Platform_Rest_Test.Entities.GLSlipDay
 
         public double credit { get; set; }
 
+        public double amountTC { get; set; }
+
         public string description { get; set; }
 
         public string auxcode { get; set; }

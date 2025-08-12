@@ -9,6 +9,7 @@ namespace LogoJ_Platform_Rest_Test.Helper
     {
         internal static void CustomizeGrid(GridView view)
         {
+            view.OptionsCustomization.AllowColumnMoving = false;
             view.OptionsFind.FindNullPrompt = "Aramak için buraya yazın...";
             view.OptionsBehavior.Editable = false;
             view.OptionsBehavior.ReadOnly = true;
