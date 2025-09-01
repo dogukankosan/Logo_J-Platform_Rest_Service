@@ -2,10 +2,10 @@
 
 ## 📸 Ekran Görüntüleri
 
-### Genel Muhasebe Aktarım
+### Malzeme Yönetimi
 <img src="https://github.com/user-attachments/assets/7bb03be3-926f-46c7-9351-6ea878343204" width="800" />
 
-### Malzeme Yönetimi
+### Genel Muhasebe Aktarım
 <img src="https://github.com/user-attachments/assets/555b42a3-81f1-41c6-9543-05c4b95a1002" width="800" />
 
 [![License](https://img.shields.io/github/license/dogukankosan/Logo_J-Platform_Rest_Service)](LICENSE) 
