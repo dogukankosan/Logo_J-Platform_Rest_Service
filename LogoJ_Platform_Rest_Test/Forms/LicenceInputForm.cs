@@ -20,38 +20,66 @@ namespace LogoJ_Platform_Rest_Test.Forms
         }
         private async void btn_Save_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(txt_CompanyName.Text))
+            if (string.IsNullOrWhiteSpace(txt_CompanyName.Text))
             {
-                XtraMessageBox.Show("Şirket Adı Boş Geçilemez !!", "Hatalı", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                XtraMessageBox.Show("Şirket Adı boş geçilemez!", "Hatalı", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 txt_CompanyName.Focus();
                 return;
             }
-            if (string.IsNullOrEmpty(txt_Key.Text))
+            if (string.IsNullOrWhiteSpace(txt_Key.Text))
             {
-                XtraMessageBox.Show("Lisans Anahtarı Boş Geçilemez !!", "Hatalı", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                XtraMessageBox.Show("Lisans Anahtarı boş geçilemez!", "Hatalı", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 txt_Key.Focus();
                 return;
             }
-            var licenceResult = await LicenceKeyValidate.CheckLicenceDateAsync(txt_CompanyName.Text.Trim(), txt_Key.Text.Trim());
-            if (!licenceResult.Success || licenceResult.Date.Date < DateTime.Today)
+            string firm = txt_CompanyName.Text.Trim();
+            string key = txt_Key.Text.Trim();
+            string machineId = MachineIdHelper.GetMachineId();
+            this.Enabled = false;
+            Cursor oldCursor = Cursor.Current;
+            Cursor.Current = Cursors.WaitCursor;
+            try
             {
-                XtraMessageBox.Show("Girilen lisans geçersiz veya süresi dolmuş.", "Lisans Hatası", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            await SQLiteCrud.InsertUpdateDeleteAsync("DELETE FROM LicenceKey", null);
-            await SQLiteCrud.InsertUpdateDeleteAsync(
-                "INSERT INTO LicenceKey (Key_, CompanyName) VALUES (@Key_, @CompanyName)",
-                new Dictionary<string, object>
+                var licenceResult = await LicenceKeyValidate.CheckLicenceDateAsync(firm, key, machineId);
+                if (!licenceResult.Success)
                 {
-            { "@Key_", txt_Key.Text.Trim() },
-            { "@CompanyName", txt_CompanyName.Text.Trim() }
-                });
-            this.DialogResult = DialogResult.OK;
-            this.Close();
-        }
-        private void LicenceInputForm_Load(object sender, EventArgs e)
-        {
-
+                    Clipboard.SetText(machineId);
+                    XtraMessageBox.Show(
+                        "Bu makine için lisans bulunamadı.\n\n" +
+                        $"Firma: {firm}\nKey: {key}\nMachineId: {machineId}\n\n" +
+                        "MachineId panoya kopyalandı. Lütfen yetkiliye iletin; lisans tanımlandıktan sonra yeniden deneyin.",
+                        "Lisans Bulunamadı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (licenceResult.Date.Date < DateTime.Today)
+                {
+                    XtraMessageBox.Show("Girilen lisansın süresi dolmuş.", "Lisans Hatası",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                await SQLiteCrud.InsertUpdateDeleteAsync("DELETE FROM LicenceKey", null);
+                await SQLiteCrud.InsertUpdateDeleteAsync(
+                    "INSERT INTO LicenceKey (Key_, CompanyName) VALUES (@Key_, @CompanyName)",
+                    new Dictionary<string, object>
+                    {
+                { "@Key_", key },
+                { "@CompanyName", firm }
+                    });
+                XtraMessageBox.Show("Lisans doğrulandı ve kaydedildi.", "Bilgi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show("Lisans doğrulama sırasında hata oluştu:\n" + ex.Message,
+                    "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor.Current = oldCursor;
+                this.Enabled = true;
+            }
         }
     }
 }

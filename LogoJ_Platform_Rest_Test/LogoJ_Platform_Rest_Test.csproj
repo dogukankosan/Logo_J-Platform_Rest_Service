@@ -79,10 +79,22 @@
     <Reference Include="ExcelNumberFormat, Version=1.0.10.0, Culture=neutral, PublicKeyToken=23c6f5d73be07eca, processorArchitecture=MSIL">
       <HintPath>..\packages\ExcelNumberFormat.1.0.10\lib\net20\ExcelNumberFormat.dll</HintPath>
     </Reference>
+    <Reference Include="Magick.NET-Q8-AnyCPU, Version=13.8.0.0, Culture=neutral, PublicKeyToken=2004825badfa91ec, processorArchitecture=MSIL">
+      <HintPath>..\packages\Magick.NET-Q8-AnyCPU.13.8.0\lib\netstandard20\Magick.NET-Q8-AnyCPU.dll</HintPath>
+    </Reference>
+    <Reference Include="Magick.NET.Core, Version=13.8.0.0, Culture=neutral, PublicKeyToken=2004825badfa91ec, processorArchitecture=MSIL">
+      <HintPath>..\packages\Magick.NET.Core.13.8.0\lib\netstandard20\Magick.NET.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.8.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.SQLite, Version=1.0.119.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
@@ -102,7 +114,30 @@
     <Reference Include="System.IO.Packaging, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IO.Packaging.4.0.0\lib\net46\System.IO.Packaging.dll</HintPath>
     </Reference>
+    <Reference Include="System.Management" />
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encodings.Web, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.8.0.0\lib\net462\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=8.0.0.4, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Json.8.0.4\lib\net462\System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -117,6 +152,7 @@
     <Compile Include="Bussines\ExcelHeaderValidator.cs" />
     <Compile Include="Bussines\GLSlipDay\ExcelRowValidator.cs" />
     <Compile Include="Bussines\GLSlip\ExcelRowValidator.cs" />
+    <Compile Include="Bussines\ImageSettingsValidator.cs" />
     <Compile Include="Bussines\RestSettingValidator.cs" />
     <Compile Include="Bussines\SQLSettingsValidator.cs" />
     <Compile Include="Entities\GLSlipDay\AccountNumber.cs" />
@@ -133,6 +169,13 @@
     <Compile Include="Entities\GLSlip\Slipline.cs" />
     <Compile Include="Entities\GLSlip\Sliplinesourcedetails.cs" />
     <Compile Include="Entities\GLSlip\Slipsourcedetails.cs" />
+    <Compile Include="Entities\ImageGenerateModel\ImageGenerationInput.cs" />
+    <Compile Include="Forms\AIItemsImageForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AIItemsImageForm.Designer.cs">
+      <DependentUpon>AIItemsImageForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\DayGlSlipForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -145,11 +188,29 @@
     <Compile Include="Forms\FormCompanyChoose.Designer.cs">
       <DependentUpon>FormCompanyChoose.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\GLAccountForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\GLAccountForm.Designer.cs">
+      <DependentUpon>GLAccountForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\HomeForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\HomeForm.Designer.cs">
       <DependentUpon>HomeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ImageGenerateSettingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ImageGenerateSettingForm.Designer.cs">
+      <DependentUpon>ImageGenerateSettingForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ItemsFileImageForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ItemsFileImageForm.Designer.cs">
+      <DependentUpon>ItemsFileImageForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\LicenceInputForm.cs">
       <SubType>Form</SubType>
@@ -168,6 +229,12 @@
     </Compile>
     <Compile Include="Forms\LogsForm.Designer.cs">
       <DependentUpon>LogsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ModuleSettingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ModuleSettingForm.Designer.cs">
+      <DependentUpon>ModuleSettingForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\RestServiceSettingForm.cs">
       <SubType>Form</SubType>
@@ -202,26 +269,42 @@
     <Compile Include="Helper\CurGetService.cs" />
     <Compile Include="Helper\DataHelper.cs" />
     <Compile Include="Helper\EncryptionHelper.cs" />
+    <Compile Include="Helper\GeminiTranslator.cs" />
     <Compile Include="Helper\GridViewDesigner.cs" />
+    <Compile Include="Helper\ImageCreateAI.cs" />
     <Compile Include="Helper\JPlatformHelper.cs" />
     <Compile Include="Helper\JPlatformSession.cs" />
     <Compile Include="Helper\J_PlatformRest.cs" />
     <Compile Include="Helper\LicenceKeyValidate.cs" />
+    <Compile Include="Helper\MachineIdHelper.cs" />
     <Compile Include="Helper\MyGridLocalizer.cs" />
+    <Compile Include="Helper\NormalizeHelper.cs" />
     <Compile Include="Helper\SQLCrud.cs" />
     <Compile Include="Helper\SQLiteCrud.cs" />
     <Compile Include="Helper\TextLog.cs" />
     <Compile Include="Helper\TimeHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Forms\AIItemsImageForm.resx">
+      <DependentUpon>AIItemsImageForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\DayGlSlipForm.resx">
       <DependentUpon>DayGlSlipForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormCompanyChoose.resx">
       <DependentUpon>FormCompanyChoose.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\GLAccountForm.resx">
+      <DependentUpon>GLAccountForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\HomeForm.resx">
       <DependentUpon>HomeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ImageGenerateSettingForm.resx">
+      <DependentUpon>ImageGenerateSettingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ItemsFileImageForm.resx">
+      <DependentUpon>ItemsFileImageForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\LicenceInputForm.resx">
       <DependentUpon>LicenceInputForm.cs</DependentUpon>
@@ -231,6 +314,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\LogsForm.resx">
       <DependentUpon>LogsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ModuleSettingForm.resx">
+      <DependentUpon>ModuleSettingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\RestServiceSettingForm.resx">
       <DependentUpon>RestServiceSettingForm.cs</DependentUpon>
@@ -281,9 +367,11 @@
     <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
     <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
     <Error Condition="!Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets'))" />
+    <Error Condition="!Exists('..\packages\Magick.NET-Q8-AnyCPU.13.8.0\build\netstandard20\Magick.NET-Q8-AnyCPU.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Magick.NET-Q8-AnyCPU.13.8.0\build\netstandard20\Magick.NET-Q8-AnyCPU.targets'))" />
   </Target>
   <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
   <Import Project="..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets" Condition="Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" />
+  <Import Project="..\packages\Magick.NET-Q8-AnyCPU.13.8.0\build\netstandard20\Magick.NET-Q8-AnyCPU.targets" Condition="Exists('..\packages\Magick.NET-Q8-AnyCPU.13.8.0\build\netstandard20\Magick.NET-Q8-AnyCPU.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

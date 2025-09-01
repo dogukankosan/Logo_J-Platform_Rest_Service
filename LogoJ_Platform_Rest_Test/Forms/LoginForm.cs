@@ -11,6 +11,8 @@ using DevExpress.XtraEditors;
 using LogoJ_Platform_Rest_Test.Helper;
 using LogoJ_Platform_Rest_Test.Entities;
 using System.Net;
+using System.Net.Http;
+using DevExpress.XtraEditors.Controls;
 
 namespace LogoJ_Platform_Rest_Test.Forms
 {
@@ -20,14 +22,43 @@ namespace LogoJ_Platform_Rest_Test.Forms
         {
             InitializeComponent();
         }
-        private static bool IsInternetAvailable()
+        private void ApplyStyles()
+        {
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            this.BackgroundImageLayout = ImageLayout.Stretch;
+            this.StartPosition = FormStartPosition.CenterScreen;
+            StyleTextEdit(txt_UserName, "Kullanıcı Adı");
+            StyleTextEdit(txt_Password, "Şifre");
+            btn_Login.Text = "Ateşle";
+            btn_Login.Appearance.BackColor = Color.FromArgb(200, 0, 0);
+            btn_Login.Appearance.ForeColor = Color.White;
+            btn_Login.Appearance.Font = new Font("Segoe UI", 18, FontStyle.Bold);
+            btn_Login.Appearance.Options.UseBackColor = true;
+            btn_Login.Appearance.Options.UseForeColor = true;
+            btn_Login.Appearance.Options.UseFont = true;
+        }
+        private void StyleTextEdit(TextEdit txt, string nullPrompt)
+        {
+            txt.Properties.Appearance.BackColor = Color.White;
+            txt.Properties.Appearance.ForeColor = Color.Black;
+            txt.Properties.Appearance.Font = new Font("Segoe UI", 11);
+            txt.Properties.BorderStyle = BorderStyles.Simple;
+            txt.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
+            txt.Properties.AppearanceFocused.BackColor = Color.FromArgb(255, 240, 220);
+            txt.Properties.AppearanceFocused.BorderColor = Color.Red;
+            txt.Properties.AppearanceFocused.Options.UseBackColor = true;
+            txt.Properties.AppearanceFocused.Options.UseBorderColor = true;
+            txt.Properties.NullValuePrompt = nullPrompt;
+            txt.Properties.NullValuePromptShowForEmptyValue = true;
+        }
+        private static async Task<bool> IsInternetAvailableAsync()
         {
             try
             {
-                using (WebClient client = new WebClient())
-                using (client.OpenRead("http://clients3.google.com/generate_204"))
+                using (HttpClient client = new HttpClient())
                 {
-                    return true;
+                    HttpResponseMessage response = await client.GetAsync("http://clients3.google.com/generate_204");
+                    return response.StatusCode == HttpStatusCode.NoContent; // 204
                 }
             }
             catch
@@ -51,7 +82,11 @@ namespace LogoJ_Platform_Rest_Test.Forms
         }
         private async void LoginForm_Load(object sender, EventArgs e)
         {
-            if (!IsInternetAvailable())
+            DevExpress.Skins.SkinManager.EnableFormSkins();
+            DevExpress.UserSkins.BonusSkins.Register();
+            DevExpress.LookAndFeel.UserLookAndFeel.Default.SetSkinStyle("Office 2019 Black");
+            ApplyStyles();
+            if (!await IsInternetAvailableAsync())
             {
                 await TextLog.LogToSQLiteAsync(txt_UserName.Text.Trim(), "İnternet bağlantısı yok.");
                 XtraMessageBox.Show("İnternet bağlantısı yok.", "Bağlantı Hatası", MessageBoxButtons.OK, MessageBoxIcon.Warning);

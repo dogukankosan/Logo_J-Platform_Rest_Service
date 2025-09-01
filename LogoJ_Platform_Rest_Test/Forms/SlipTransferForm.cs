@@ -23,6 +23,11 @@ using LogoJ_Platform_Rest_Test.Bussines;
 using LogoJ_Platform_Rest_Test.Bussines.GLSlip;
 using DevExpress.XtraGauges.Win.Gauges.Digital;
 using DevExpress.XtraGauges.Core.Base;
+using DevExpress.XtraGrid;
+using DevExpress.Data;
+using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.Utils;
+using DevExpress.XtraGauges.Core.Drawing;
 
 namespace LogoJ_Platform_Rest_Test.Forms
 {
@@ -122,9 +127,17 @@ namespace LogoJ_Platform_Rest_Test.Forms
                     SplashScreenManager.CloseForm();
                 this.Enabled = true;
             }
+            GroupGrid();
         }
         private async void SlipTransferForm_Load(object sender, EventArgs e)
         {
+            gridView1.OptionsView.ShowGroupPanel = false;
+            gridView1.OptionsView.ShowAutoFilterRow = false;
+            gridView1.OptionsCustomization.AllowFilter = false;
+            gridView1.OptionsFilter.AllowFilterEditor = false;
+            gridView1.OptionsMenu.EnableColumnMenu = false;
+            digitalGauge1.AppearanceOff.ContentBrush = new SolidBrushObject("Color:Transparent");
+            digitalGauge2.AppearanceOff.ContentBrush = new SolidBrushObject("Color:Transparent");
             try
             {
                 dtConnectionSQL = await SQLiteCrud.GetDataFromSQLiteAsync("SELECT * FROM SQLConnectionString LIMIT 1");
@@ -149,6 +162,8 @@ namespace LogoJ_Platform_Rest_Test.Forms
                 XtraMessageBox.Show("Form yüklenirken hata oluştu:\n" + ex.Message, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.Close();
             }
+            gridView1.CustomSummaryCalculate -= GridView1_CustomSummaryCalculate;
+            gridView1.CustomSummaryCalculate += GridView1_CustomSummaryCalculate;
         }
         private async void btn_Excel_Click(object sender, EventArgs e)
         {
@@ -194,6 +209,7 @@ namespace LogoJ_Platform_Rest_Test.Forms
                         gridControl1.DataSource = dt;
                         gridView1.BestFitColumns();
                         SayaciGuncelle();
+                        GroupGrid();
                     }
                 }
             }
@@ -270,10 +286,15 @@ namespace LogoJ_Platform_Rest_Test.Forms
                 {
                     var fisler = slips
                         .Where(x => x.FisNumarasi == slipGroup.FisNumarasi
-                            && x.OrgBirim == slipGroup.OrgBirim
-                            && !string.IsNullOrWhiteSpace(x.Muhasebe))
+                                && x.OrgBirim == slipGroup.OrgBirim
+                                && !string.IsNullOrWhiteSpace(x.Muhasebe))
                         .ToList();
-                    if (!fisler.Any()) continue;
+                    if (!fisler.Any())
+                    {
+                        AddLogWithColor(richTextBox1, $"Fiş {slipGroup.FisNumarasi} için geçerli muhasebe satırı bulunamadı", Color.Red);
+                        errorCount++;
+                        continue;
+                    }
                     var logoSlip = await BuildLogoGSlip(fisler, slipGroup, chartNr, vtCode);
                     string jsonData = JsonConvert.SerializeObject(logoSlip);
                     string url = $"{session.URL}/logo/restservices/rest/v2.0/glslips?chartNr={chartNr}&vtCode={vtCode}";
@@ -285,15 +306,20 @@ namespace LogoJ_Platform_Rest_Test.Forms
                         HttpResponseMessage response = await client.PostAsync(url, content);
                         string result = await response.Content.ReadAsStringAsync();
                         if (response.IsSuccessStatusCode)
+                        {
                             successCount++;
+                            AddLogWithColor(richTextBox1, $"Fiş {slipGroup.FisNumarasi} başarıyla aktarıldı", Color.Green);
+                        }
                         else
                         {
                             errorCount++;
                             string userFriendlyMessage;
+
                             if (result.Contains("Aynı özelliklerde kayıt mevcut"))
-                                userFriendlyMessage = "Fiş aktarım hatası:\nAktarılmaya çalışılan muhasebe fişi daha önceden işlenmiştir.";
+                                userFriendlyMessage = $"Fiş {slipGroup.FisNumarasi} aktarım hatası:\nAktarılmaya çalışılan muhasebe fişi daha önceden işlenmiştir.";
                             else
-                                userFriendlyMessage = "Fiş aktarım hatası:\n" + result;
+                                userFriendlyMessage = $"Fiş {slipGroup.FisNumarasi} aktarım hatası:\n{result}";
+                            AddLogWithColor(richTextBox1, userFriendlyMessage, Color.Red);
                             XtraMessageBox.Show(userFriendlyMessage, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             await TextLog.LogToSQLiteAsync(username, "Fiş aktarımı hatası: " + result);
                         }
@@ -302,7 +328,9 @@ namespace LogoJ_Platform_Rest_Test.Forms
                 catch (Exception exSlip)
                 {
                     errorCount++;
-                    await TextLog.LogToSQLiteAsync(username, "Fiş aktarımı hatası: " + exSlip);
+                    string errorMsg = $"Fiş {slipGroup?.FisNumarasi ?? "Unknown"} aktarımı hatası: {exSlip.Message}";
+                    AddLogWithColor(richTextBox1, errorMsg, Color.Red);
+                    await TextLog.LogToSQLiteAsync(username, errorMsg);
                 }
             }
             return (successCount, errorCount);
@@ -383,27 +411,40 @@ namespace LogoJ_Platform_Rest_Test.Forms
         {
             try
             {
-                string filePath = Path.Combine(Application.StartupPath, "Template", "Muhasebe Mahsup Fisi.xlsx");
-                if (!File.Exists(filePath))
+                string sourcePath = Path.Combine(Application.StartupPath, "Template", "Muhasebe Mahsup Fisi.xlsx");
+                if (!File.Exists(sourcePath))
                 {
-                    XtraMessageBox.Show("Excel dosyası bulunamadı:\n" + filePath,
-                                    "Hata",
-                                    MessageBoxButtons.OK,
-                                    MessageBoxIcon.Error);
+                    XtraMessageBox.Show("Excel dosyası bulunamadı:\n" + sourcePath,
+                                        "Hata",
+                                        MessageBoxButtons.OK,
+                                        MessageBoxIcon.Error);
                     return;
                 }
-                Process.Start(new ProcessStartInfo
+                string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                string destPath = Path.Combine(desktopPath, "Muhasebe Mahsup Fisi.xlsx");
+                if (File.Exists(destPath))
+                    File.Delete(destPath);
+                File.Copy(sourcePath, destPath);
+                DialogResult dr = XtraMessageBox.Show(
+                    "Excel dosyası masaüstüne kopyalandı. Açmak için OK'a basın.",
+                    "Bilgi",
+                    MessageBoxButtons.OKCancel,
+                    MessageBoxIcon.Information);
+                if (dr == DialogResult.OK)
                 {
-                    FileName = filePath,
-                    UseShellExecute = true
-                });
+                    Process.Start(new ProcessStartInfo
+                    {
+                        FileName = destPath,
+                        UseShellExecute = true
+                    });
+                }
             }
             catch (Exception ex)
             {
                 XtraMessageBox.Show("Excel dosyası açılamadı!\n" + ex.Message,
-                                "Hata",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
+                                    "Hata",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
             }
         }
         private void SayaciGuncelle()
@@ -414,11 +455,10 @@ namespace LogoJ_Platform_Rest_Test.Forms
                 int rowCount = gridView1.DataRowCount;
                 if (rowCount == 0)
                 {
-                    SetGaugeText(digitalGauge5, "0");
-                    SetGaugeText(digitalGauge6, "0");
+                    SetGaugeText(digitalGauge1, "0");
+                    SetGaugeText(digitalGauge2, "0");
                     lbl_debit.Text = "0,00";
                     lbl_credit.Text = "0,00";
-                    richTextBox1.Clear();
                     return;
                 }
                 HashSet<string> uniqueKeys = new HashSet<string>();
@@ -449,19 +489,17 @@ namespace LogoJ_Platform_Rest_Test.Forms
                         toplamAlacak += alacak;
                 }
                 int fisCount = uniqueKeys.Count;
-                SetGaugeText(digitalGauge5, fisCount.ToString());
-                SetGaugeText(digitalGauge6, rowCount.ToString());
+                SetGaugeText(digitalGauge1, fisCount.ToString());
+                SetGaugeText(digitalGauge2, rowCount.ToString());
                 var trCulture = new CultureInfo("tr-TR");
                 lbl_debit.Text = toplamBorc.ToString("N2", trCulture);
                 lbl_credit.Text = toplamAlacak.ToString("N2", trCulture);
-                richTextBox1.Clear();
-                richTextBox1.Text = fisListesi.ToString();
             }
             catch (Exception ex)
             {
                 TextLog.LogToSQLiteAsync(username, $"Sayaç güncelleme hatası: {ex.Message}").Wait();
-                SetGaugeText(digitalGauge5, "0");
-                SetGaugeText(digitalGauge6, "0");
+                SetGaugeText(digitalGauge1, "0");
+                SetGaugeText(digitalGauge2, "0");
                 lbl_debit.Text = "0,00";
                 lbl_credit.Text = "0,00";
                 richTextBox1.Clear();
@@ -472,7 +510,24 @@ namespace LogoJ_Platform_Rest_Test.Forms
             if (gauge != null)
                 gauge.Text = text;
         }
-        private async void ficheGroupToolStripMenuItem_Click(object sender, EventArgs e)
+        private void btn_Group_Click(object sender, EventArgs e)
+        {
+            GroupGrid();
+        }
+        private async void btn_ungroup_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                gridView1.ClearGrouping();
+                SayaciGuncelle();
+            }
+            catch (Exception ex)
+            {
+                await TextLog.LogToSQLiteAsync(username, $"Grup kaldırma hatası: {ex.Message}");
+                XtraMessageBox.Show($"Grup kaldırma işlemi sırasında hata oluştu: {ex.Message}", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private async void GroupGrid()
         {
             try
             {
@@ -487,16 +542,73 @@ namespace LogoJ_Platform_Rest_Test.Forms
                 {
                     await TextLog.LogToSQLiteAsync(username, "FIS NUMARASI sütunu bulunamadı - gruplama yapılamadı");
                     XtraMessageBox.Show("FIS NUMARASI sütunu bulunamadı!", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
                 }
+                gridView1.Columns["BORC"].DisplayFormat.FormatType = FormatType.Numeric;
+                gridView1.Columns["BORC"].DisplayFormat.FormatString = "n2";
+                gridView1.Columns["ALACAK"].DisplayFormat.FormatType = FormatType.Numeric;
+                gridView1.Columns["ALACAK"].DisplayFormat.FormatString = "n2";
+                gridView1.OptionsView.ShowFooter = true;
+                gridView1.OptionsView.GroupFooterShowMode = GroupFooterShowMode.VisibleAlways;
+                gridView1.OptionsView.ShowFooter = true;
+                gridView1.GroupSummary.Clear();
+
+                var grpBorc = new GridGroupSummaryItem()
+                {
+                    FieldName = "BORC",
+                    SummaryType = SummaryItemType.Custom,
+                    DisplayFormat = "{0:n2}",
+                    ShowInGroupColumnFooter = gridView1.Columns["BORC"]
+                };
+                gridView1.GroupSummary.Add(grpBorc);
+
+                var grpAlacak = new GridGroupSummaryItem()
+                {
+                    FieldName = "ALACAK",
+                    SummaryType = SummaryItemType.Custom,
+                    DisplayFormat = "{0:n2}",
+                    ShowInGroupColumnFooter = gridView1.Columns["ALACAK"]
+                };
+                gridView1.GroupSummary.Add(grpAlacak);
             }
             catch (Exception ex)
             {
-                await TextLog.LogToSQLiteAsync(username, $"Gruplama hatası: {ex.Message}");
-                XtraMessageBox.Show($"Gruplama işlemi sırasında hata oluştu: {ex.Message}", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                await TextLog.LogToSQLiteAsync(username, $"Gruplama/Toplam hatası: {ex.Message}");
+                XtraMessageBox.Show($"İşlem sırasında hata oluştu: {ex.Message}", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        private async void ficheUnGroupToolStripMenuItem_Click(object sender, EventArgs e)
+        private void GridView1_CustomSummaryCalculate(object sender, CustomSummaryEventArgs e)
         {
+            GridView view = sender as GridView;
+            if (e.SummaryProcess == CustomSummaryProcess.Start)
+                e.TotalValue = 0.0;
+            else if (e.SummaryProcess == CustomSummaryProcess.Calculate && e.IsGroupSummary)
+            {
+                var field = ((GridSummaryItem)e.Item).FieldName;
+                var valObj = view.GetRowCellValue(e.RowHandle, field);
+                if (valObj == null || valObj == DBNull.Value) return;
+
+                string valStr = valObj.ToString().Replace(",", ".");
+                if (double.TryParse(valStr, NumberStyles.Any, CultureInfo.InvariantCulture, out double val))
+                    e.TotalValue = (double)e.TotalValue + val;
+            }
+        }
+        private void AddLogWithColor(RichTextBox rtb, string text, Color color)
+        {
+            rtb.SelectionStart = rtb.TextLength;
+            rtb.SelectionLength = 0;
+            rtb.SelectionColor = color;
+            rtb.AppendText(text + Environment.NewLine);
+            rtb.SelectionColor = rtb.ForeColor;
+        }
+        private async void btn_Clear_Click(object sender, EventArgs e)
+        {
+            gridControl1.DataSource = null;
+            lbl_credit.Text = "0,00";
+            lbl_debit.Text = "0,00";
+            SetGaugeText(digitalGauge1, "0");
+            SetGaugeText(digitalGauge2, "0");
+            richTextBox1.Text = "";
             try
             {
                 gridView1.ClearGrouping();

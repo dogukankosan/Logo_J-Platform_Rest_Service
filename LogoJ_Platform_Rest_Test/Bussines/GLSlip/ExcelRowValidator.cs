@@ -350,6 +350,7 @@ namespace LogoJ_Platform_Rest_Test.Bussines.GLSlip
             {
                 ofd.Filter = "Excel Dosyaları|*.xlsx;*.xls";
                 ofd.Title = "Excel Dosyası Seç";
+                ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
                 return ofd.ShowDialog() == DialogResult.OK ? ofd.FileName : null;
             }
         }

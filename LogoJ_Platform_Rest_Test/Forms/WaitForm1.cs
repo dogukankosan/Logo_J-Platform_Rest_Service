@@ -28,6 +28,8 @@ namespace LogoJ_Platform_Rest_Test.Forms
             this.peLogo.MouseDown += WaitForm1_MouseDown;
             this.peLogo.MouseMove += WaitForm1_MouseMove;
             this.peLogo.MouseUp += WaitForm1_MouseUp;
+            this.labelCopyright.MouseUp += WaitForm1_MouseUp;
+            this.labelStatus.MouseUp += WaitForm1_MouseUp;
         }
         public override void ProcessCommand(Enum cmd, object arg)
         {
@@ -66,9 +68,9 @@ namespace LogoJ_Platform_Rest_Test.Forms
         {
             labelCopyright.Text = labelCopyright.Text.Replace("2024", DateTime.Now.Year.ToString());
         }
-        private async void pictureEdit1_Click(object sender, EventArgs e)
+        private async void peLogo_Click(object sender, EventArgs e)
         {
-            const string url = "https://asyen.com.tr"; 
+            const string url = "https://asyen.com.tr";
             try
             {
                 ProcessStartInfo psi = new ProcessStartInfo

@@ -5,15 +5,18 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using LogoJ_Platform_Rest_Test.Helper;
+using DevExpress.XtraGrid.Views.Grid;
 
 namespace LogoJ_Platform_Rest_Test.Forms
 {
     public partial class LogsForm : XtraForm
     {
-        public LogsForm()
+        public LogsForm(string username_)
         {
+            username = username_;
             InitializeComponent();
         }
+        private string username = "";
         private class LogItem
         {
             public string UserName { get; set; }
@@ -25,8 +28,19 @@ namespace LogoJ_Platform_Rest_Test.Forms
             List<LogItem> logs = new List<LogItem>();
             try
             {
-                const string query = "SELECT UserName, Details, Date_ FROM ErrorLogs ORDER BY Date_ DESC";
-                DataTable dt = await SQLiteCrud.GetDataFromSQLiteAsync(query);
+                string query;
+                Dictionary<string, object> parameters = new Dictionary<string, object>();
+                if (!string.IsNullOrWhiteSpace(username))
+                {
+                    query = "SELECT UserName, Details, Date_ FROM ErrorLogs WHERE UserName = @username COLLATE NOCASE ORDER BY Date_ DESC";
+                    parameters.Add("@username", username);
+                }
+                else
+                {
+                    query = "SELECT UserName, Details, Date_ FROM ErrorLogs ORDER BY Date_ DESC";
+                }
+
+                DataTable dt = await SQLiteCrud.GetDataFromSQLiteAsync(query, parameters);
                 if (dt == null || dt.Rows.Count == 0)
                     return logs;
                 foreach (DataRow row in dt.Rows)
@@ -35,6 +49,7 @@ namespace LogoJ_Platform_Rest_Test.Forms
                     string dateFormatted = dateRaw;
                     if (DateTime.TryParse(dateRaw, out var date))
                         dateFormatted = date.ToString("yyyy-MM-dd HH:mm:ss");
+
                     logs.Add(new LogItem
                     {
                         UserName = row["UserName"]?.ToString(),
@@ -45,8 +60,7 @@ namespace LogoJ_Platform_Rest_Test.Forms
             }
             catch (Exception ex)
             {
-                XtraMessageBox.Show("SQLite log okuma hatası:\n" + ex.Message, "Hata",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                XtraMessageBox.Show("SQLite log okuma hatası:\n" + ex.Message, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 await TextLog.LogToSQLiteAsync("LOG FORM", "SQLite log okuma exception: " + ex);
             }
             return logs;
@@ -54,13 +68,51 @@ namespace LogoJ_Platform_Rest_Test.Forms
         private async void LogsForm_Load(object sender, EventArgs e)
         {
             gridControl1.DataSource = await ReadLogsFromSQLite();
+            CustomizeGrid();
+        }
+        private void CustomizeGrid()
+        {
             GridViewDesigner.CustomizeGrid(gridView1);
             gridView1.Columns["UserName"].Caption = "Kullanıcı || Form";
             gridView1.Columns["Details"].Caption = "Detay";
             gridView1.Columns["Date_"].Caption = "Tarih";
             gridView1.OptionsBehavior.ReadOnly = true;
             gridView1.OptionsBehavior.Editable = false;
+            gridView1.OptionsView.ShowFooter = true;
+            gridView1.OptionsView.ShowGroupPanel = true;
+            gridView1.OptionsCustomization.AllowColumnMoving = true;         
+            gridView1.OptionsMenu.EnableGroupPanelMenu = true;
+            gridView1.OptionsCustomization.AllowGroup = true;
+            gridView1.OptionsBehavior.AutoExpandAllGroups = true; 
+            gridView1.CustomDrawFooterCell += GridView1_CustomDrawFooterCell;
+            gridView1.ColumnFilterChanged += GridView1_ColumnFilterChanged;
+            UpdateFooterCount();
         }
+        private void GridView1_ColumnFilterChanged(object sender, EventArgs e)
+        {
+            UpdateFooterCount();
+        }
+        private void GridView1_CustomDrawFooterCell(object sender, FooterCellCustomDrawEventArgs e)
+        {
+            if (e.Column == null && e.Info != null && e.Info.SummaryItem == null)
+            {
+                e.Info.DisplayText = $"Toplam Kayıt: {gridView1.RowCount}";
+            }
+        }
+        private void UpdateFooterCount()
+        {
+            var col = gridView1.Columns["UserName"];
+            if (col == null) return;
+
+            col.Summary.Clear();
+            col.Summary.Add(new DevExpress.XtraGrid.GridColumnSummaryItem(
+                DevExpress.Data.SummaryItemType.Count,
+                "UserName",
+                "Toplam Kayıt: {0}"
+            ));
+        }
+
+
         private async void excelAlToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -90,12 +142,21 @@ namespace LogoJ_Platform_Rest_Test.Forms
         {
             try
             {
-                string query = "DELETE FROM ErrorLogs";
-                var result = await SQLiteCrud.InsertUpdateDeleteAsync(query, new Dictionary<string, object>());
+                string query;
+                Dictionary<string, object> parameters = new Dictionary<string, object>();
+                if (!string.IsNullOrWhiteSpace(username))
+                {
+                    query = "DELETE FROM ErrorLogs WHERE UserName = @username COLLATE NOCASE";
+                    parameters.Add("@username", username);
+                }
+                else
+                    query = "DELETE FROM ErrorLogs";
+                var result = await SQLiteCrud.InsertUpdateDeleteAsync(query, parameters);
                 if (result.Success)
                 {
                     gridControl1.DataSource = await ReadLogsFromSQLite();
                     gridView1.RefreshData();
+                    UpdateFooterCount();
                     XtraMessageBox.Show("SQLite logları başarıyla silindi.", "Bilgi", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
