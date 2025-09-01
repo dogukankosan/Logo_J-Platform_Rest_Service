@@ -62,81 +62,88 @@ Logo_J-Platform_Rest_Service/
   ├── Resources/                      # Excel şablonları, ikonlar
   ├── SQLite/                         # Ayar DB’si (RestSettings.db)
   └── Program.cs                      # Uygulama giriş noktası
-🏃‍♂️ Kullanım Akışı
-1️⃣ Login / Lisans Girişi → REST + SQL bağlantı ayarlarını yap, lisans anahtarını gir.
-2️⃣ Genel Muhasebe → Excel’den fiş yükle, kontrol et, Logo’ya aktar.
-3️⃣ Malzeme Yönetimi → Malzemeleri listele, dosya veya AI ile görselleri ekle.
-4️⃣ AI İşlemleri → Stability AI ile prompt gir, görsel üret; Gemini ile açıklamaları çevir.
-5️⃣ Aktarım → ERP/JPlatform’a tek tıkla gönder.
-6️⃣ Loglama → Başarılı/Uyarı/Hata kayıtlarını Log ekranından takip et.
+```
 
-🎯 Durum Renkleri
-🟢 Başarılı → Aktarım tamamlandı
+---
 
-🟡 Uyarı → Veri eşleşti ama dönüştürülerek aktarıldı
+## 🏃‍♂️ Kullanım Akışı
+1️⃣ **Login / Lisans Girişi** → REST + SQL bağlantı ayarlarını yap, lisans anahtarını gir.  
+2️⃣ **Genel Muhasebe** → Excel’den fiş yükle, kontrol et, Logo’ya aktar.  
+3️⃣ **Malzeme Yönetimi** → Malzemeleri listele, dosya veya AI ile görselleri ekle.  
+4️⃣ **AI İşlemleri** → Stability AI ile prompt gir, görsel üret; Gemini ile açıklamaları çevir.  
+5️⃣ **Aktarım** → ERP/JPlatform’a tek tıkla gönder.  
+6️⃣ **Loglama** → Başarılı/Uyarı/Hata kayıtlarını Log ekranından takip et.  
 
-🔴 Hata → Aktarım/bağlantı hatası (detay log ekranında)
+---
 
-🔧 Teknik Detaylar
-Framework: .NET Framework 4.8
+## 🎯 Durum Renkleri
+- 🟢 **Başarılı** → Aktarım tamamlandı  
+- 🟡 **Uyarı** → Veri eşleşti ama dönüştürülerek aktarıldı  
+- 🔴 **Hata** → Aktarım/bağlantı hatası (detay log ekranında)  
 
-UI Library: DevExpress WinForms 23.x
+---
 
-Database: SQLite (ayar + log + cache)
+## 🔧 Teknik Detaylar
+- **Framework:** .NET Framework 4.8  
+- **UI Library:** DevExpress WinForms 23.x  
+- **Database:** SQLite (ayar + log + cache)  
+- **Excel Processing:** EPPlus  
+- **API:** Logo J-Platform REST API  
+- **AI:** Stability AI (image), Google Gemini API (translate)  
+- **Logging:** NLog + SQLite  
 
-Excel Processing: EPPlus
+---
 
-API: Logo J-Platform REST API
+## 🐛 Bilinen Sorunlar
+- Token süresi dolarsa → uygulama otomatik yeniler, devam etmezse tekrar login.  
+- Excel yanlış format → Validator hata raporu verir.  
+- Görsel eşleşmezse → AI fallback ile üretim yapılır.  
 
-AI: Stability AI (image), Google Gemini API (translate)
+---
 
-Logging: NLog + SQLite
+## 🏷️ Versiyon Geçmişi
+### v3.0.0 (Güncel)
+- ✅ Cari Kart modülü çıkarıldı  
+- ✅ GLSlip + GLSlipDay entegrasyonu  
+- ✅ Malzeme Yönetimi modülü eklendi  
+- ✅ Stability AI + Gemini API entegrasyonu  
+- ✅ Lisanslama ve sistem ayarları eklendi  
+- ✅ Loglama & hata takip ekranları  
 
-🐛 Bilinen Sorunlar
-Token süresi dolarsa → uygulama otomatik yeniler, devam etmezse tekrar login.
+### v2.1.0
+- Muhasebe fişi modülü, Excel aktarım, hata yönetimi  
 
-Excel yanlış format → Validator hata raporu verir.
+### v2.0.0
+- DevExpress UI entegrasyonu, token auth, SQLite  
 
-Görsel eşleşmezse → AI fallback ile üretim yapılır.
+### v1.0.0
+- Temel cari kart işlemleri, REST API bağlantısı  
 
-🏷️ Versiyon Geçmişi
-v3.0.0 (Güncel)
-✅ Cari Kart modülü çıkarıldı
+---
 
-✅ GLSlip + GLSlipDay entegrasyonu
+## 📜 Lisans
+Bu proje **MIT License** ile lisanslanmıştır. [📄 Lisans Dosyasını Görüntüle](LICENSE)
 
-✅ Malzeme Yönetimi modülü eklendi
-
-✅ Stability AI + Gemini API entegrasyonu
-
-✅ Lisanslama ve sistem ayarları eklendi
-
-✅ Loglama & hata takip ekranları
-
-v2.1.0
-Muhasebe fişi modülü, Excel aktarım, hata yönetimi
-
-v2.0.0
-DevExpress UI entegrasyonu, token auth, SQLite
-
-v1.0.0
-Temel cari kart işlemleri, REST API bağlantısı
-
-📜 Lisans
-Bu proje MIT License ile lisanslanmıştır. 📄 Lisans Dosyasını Görüntüle
+---
 
 <div align="center">
-⚡ Hızlı Başlangıç
-bash
-Kodu kopyala
+
+### ⚡ Hızlı Başlangıç
+```bash
 git clone https://github.com/dogukankosan/Logo_J-Platform_Rest_Service.git
 cd Logo_J-Platform_Rest_Service
 # Visual Studio ile açın ve F5 ile çalıştırın
-Made with ❤️ by Doğukan Kosan
+```
 
+**Made with ❤️ by [Doğukan Kosan](https://github.com/dogukankosan)**  
 </div>
-📸 Ekran Görüntüleri
-Genel Muhasebe Aktarım
+
+---
+
+## 📸 Ekran Görüntüleri
+
+### Genel Muhasebe Aktarım
 <img src="https://github.com/user-attachments/assets/7bb03be3-926f-46c7-9351-6ea878343204" width="800" />
-Malzeme Yönetimi
-<img src="https://github.com/user-attachments/assets/555b42a3-81f1-41c6-9543-05c4b95a1002" width="800" /> ```
+
+### Malzeme Yönetimi
+<img src="https://github.com/user-attachments/assets/555b42a3-81f1-41c6-9543-05c4b95a1002" width="800" />
