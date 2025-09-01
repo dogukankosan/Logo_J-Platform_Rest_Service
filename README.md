@@ -1,6 +1,12 @@
 # 🔗 Logo J-Platform REST Service
 
-<img width="1773" height="789" alt="pic" src="https://github.com/user-attachments/assets/555b42a3-81f1-41c6-9543-05c4b95a1002" />
+## 📸 Ekran Görüntüleri
+
+### Genel Muhasebe Aktarım
+<img src="https://github.com/user-attachments/assets/7bb03be3-926f-46c7-9351-6ea878343204" width="800" />
+
+### Malzeme Yönetimi
+<img src="https://github.com/user-attachments/assets/555b42a3-81f1-41c6-9543-05c4b95a1002" width="800" />
 
 [![License](https://img.shields.io/github/license/dogukankosan/Logo_J-Platform_Rest_Service)](LICENSE) 
 [![Stars](https://img.shields.io/github/stars/dogukankosan/Logo_J-Platform_Rest_Service)](https://github.com/dogukankosan/Logo_J-Platform_Rest_Service/stargazers) 
@@ -101,26 +107,6 @@ Logo_J-Platform_Rest_Service/
 
 ---
 
-## 🏷️ Versiyon Geçmişi
-### v3.0.0 (Güncel)
-- ✅ Cari Kart modülü çıkarıldı  
-- ✅ GLSlip + GLSlipDay entegrasyonu  
-- ✅ Malzeme Yönetimi modülü eklendi  
-- ✅ Stability AI + Gemini API entegrasyonu  
-- ✅ Lisanslama ve sistem ayarları eklendi  
-- ✅ Loglama & hata takip ekranları  
-
-### v2.1.0
-- Muhasebe fişi modülü, Excel aktarım, hata yönetimi  
-
-### v2.0.0
-- DevExpress UI entegrasyonu, token auth, SQLite  
-
-### v1.0.0
-- Temel cari kart işlemleri, REST API bağlantısı  
-
----
-
 ## 📜 Lisans
 Bu proje **MIT License** ile lisanslanmıştır. [📄 Lisans Dosyasını Görüntüle](LICENSE)
 
@@ -138,12 +124,3 @@ cd Logo_J-Platform_Rest_Service
 **Made with ❤️ by [Doğukan Kosan](https://github.com/dogukankosan)**  
 </div>
 
----
-
-## 📸 Ekran Görüntüleri
-
-### Genel Muhasebe Aktarım
-<img src="https://github.com/user-attachments/assets/7bb03be3-926f-46c7-9351-6ea878343204" width="800" />
-
-### Malzeme Yönetimi
-<img src="https://github.com/user-attachments/assets/555b42a3-81f1-41c6-9543-05c4b95a1002" width="800" />
