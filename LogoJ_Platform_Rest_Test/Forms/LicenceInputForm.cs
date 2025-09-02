@@ -34,7 +34,7 @@ namespace LogoJ_Platform_Rest_Test.Forms
             }
             string firm = txt_CompanyName.Text.Trim();
             string key = txt_Key.Text.Trim();
-            string machineId = MachineIdHelper.GetMachineId();
+            string machineId = MachineIdHelper.GetHardwareBoundMachineId();
             this.Enabled = false;
             Cursor oldCursor = Cursor.Current;
             Cursor.Current = Cursors.WaitCursor;

@@ -108,7 +108,7 @@ namespace LogoJ_Platform_Rest_Test.Helper
             }
             string key = Convert.ToString(dtLicence.Rows[0]["Key_"]);
             string companyName = Convert.ToString(dtLicence.Rows[0]["CompanyName"]);
-            string machineId = MachineIdHelper.GetMachineId();
+            string machineId = MachineIdHelper.GetHardwareBoundMachineId();
             bool isDateOk = await TimeHelper.IsServerDateEqualOrGreater();
             if (!isDateOk)
             {

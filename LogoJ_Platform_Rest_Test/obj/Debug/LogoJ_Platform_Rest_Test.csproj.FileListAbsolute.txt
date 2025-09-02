@@ -179,4 +179,3 @@ C:\Users\DOGUKAN\source\repos\LogoJ_Platform_Rest_Test\LogoJ_Platform_Rest_Test\
 C:\Users\DOGUKAN\source\repos\LogoJ_Platform_Rest_Test\LogoJ_Platform_Rest_Test\bin\Debug\Magick.NET-Q8-AnyCPU.xml
 C:\Users\DOGUKAN\source\repos\LogoJ_Platform_Rest_Test\LogoJ_Platform_Rest_Test\bin\Debug\Magick.NET.Core.xml
 C:\Users\DOGUKAN\source\repos\LogoJ_Platform_Rest_Test\LogoJ_Platform_Rest_Test\obj\Debug\LogoJ_Platform_Rest_Test.Forms.AIItemsImageForm.resources
-C:\Users\DOGUKAN\source\repos\LogoJ_Platform_Rest_Test\LogoJ_Platform_Rest_Test\obj\Debug\LogoJ_Platform_Rest_Test.csprojAssemblyReference.cache
